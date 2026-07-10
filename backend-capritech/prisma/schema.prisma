@@ -1,0 +1,92 @@
+datasource db{
+    provider = "mysql"
+}
+
+model User{
+    id Int @id @default(autoincrement())
+    name String
+    email String @unique
+    password String
+    documentoId Int @unique
+    postJob String
+    verifyEmail Boolean @default(true)
+    active Boolean @default(true)
+    rolId Int
+}
+
+model Role{
+    id Int @id @default(autoincrement())
+    name String
+}
+
+model Livestock{
+    name String 
+    id Int @id @default(autoincrement())
+    race String
+    sex String
+    production String
+    weight Int 
+}
+
+model Production{
+    date DateTime
+    amount Float
+    id Int @id @default(autoincrement())
+    Livestock Int 
+}
+
+model Alimentacion{
+    date DateTime
+    responsible Int @id 
+    food String
+    amount Float
+}
+
+model Responsible{
+    id Int @id
+    name String
+    documentoId Int @unique
+    profession String
+    email String @unique
+    phone Int
+}
+
+model Naciminetos{
+    birthdate DateTime
+    name String
+    id Int @id @default(autoincrement())
+    race String
+    sex String
+    weight Int
+    mother String
+    father String
+}
+model Vaccination{
+    id Int @id @default(autoincrement())
+    date DateTime
+    name String
+    vaccine String
+    responsible String
+}
+
+model Mastitis{
+    id Int @id @default(autoincrement())
+    name String
+    result String
+}
+
+model Famacha{
+    id Int @id @default(autoincrement())
+    name String
+    result String
+}
+
+model Mortality{
+    id Int @id @default(autoincrement())
+    name String
+    date DateTime
+    sex String
+    production String
+    diagnosis String
+}
+
