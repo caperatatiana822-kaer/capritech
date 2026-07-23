@@ -23,7 +23,7 @@ export default function Footer(){
                     {/* LOGO */}
                     <img 
                         className="w-28 md:w-32"
-                        src="/logo2.jpg.png"  
+                        src="/logo1.jpg.png"  
                         alt="logo"
                     />
 

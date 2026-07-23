@@ -1,6 +1,6 @@
 export default function TablaMortality() {
   return (
-    <div className="flex justify-center py-10 px-6 bg-green-50 min-h-screen">
+    <div className="flex justify-center py-10 px-6 ">
       <div className="w-full max-w-6xl bg-white shadow-lg rounded-2xl overflow-hidden">
 
         <div className="bg-green-700 text-white p-6">

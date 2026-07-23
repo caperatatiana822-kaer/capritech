@@ -10,7 +10,7 @@ export default function Home() {
   <section className="min-h-screen flex flex-col justify-center items-center text-center px-6 bg-gradient-to-b from-gray-100 via-white to-gray-200">
 
     <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-gray-800">
-      Bienvenido a <span className="text-indigo-600">CapriTech</span>
+      Bienvenido a <span className="text-green-700">CapriTech</span>
     </h1>
 
     <div className="flex gap-6 mb-6 flex-wrap justify-center">
@@ -26,7 +26,7 @@ export default function Home() {
       />
     </div>
     <p className="max-w-2xl text-lg text-gray-600 leading-relaxed">
-      <span className="font-semibold text-indigo-600">CapriTech</span> es una aplicación web desarrollada para optimizar la gestión de la información 
+      <span className="font-semibold text-green-700">CapriTech</span> es una aplicación web desarrollada para optimizar la gestión de la información 
       en la unidad de caprinos del Centro Agropecuario La Granja SENA, en Espinal - Tolima. 
       El sistema permite registrar, organizar y consultar datos relacionados con los animales, 
       como alimentación, sanidad, nacimientos, producción y control del inventario, 
@@ -39,7 +39,7 @@ export default function Home() {
     <title/>
 
     <a href="/acercaUnidad">
-  <button className="bg-blue-500 text-white px-6 py-2 rounded-full">
+  <button className="bg-green-700 text-white px-6 py-2 rounded-full">
     Acerca de la unidad
   </button>
 </a>

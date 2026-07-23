@@ -12,7 +12,7 @@ export default function NavBar(){
             
             <a href="/">
             <img 
-            src="/logo2.jpg.png"
+            src="/logo1.jpg.png"
             alt="logo"
             className="w-16 md:w-15"></img>
             
@@ -23,16 +23,16 @@ export default function NavBar(){
             </button>
 
             <div className="hidden md:flex items-center gap-8">
-                <a href="/" className="hover:text-blue-500">Inicio</a>
-                <a href="/contacto" className="hover:text-blue-500">Contacto</a>
-                <a href="/nosotros" className="hover:text-blue-500">Nosotros</a>
+                <a href="/" className="hover:text-green-700">Inicio</a>
+                <a href="/contacto" className="hover:text-green-700">Contacto</a>
+                <a href="/nosotros" className="hover:text-green-700">Nosotros</a>
                 <LoginModal/>
             </div>
             {menu && (
               <div className="md:hidden flex flex-col gap-3 mt-4 px-6 pb-4 bg-white absolute top-full left-0 w-full">
-                <a href="/" className="hover:text-blue-500">Inicio</a>
-                <a href="/contacto" className="hover:text-blue-500">Contacto</a>
-                <a href="/nosotros" className="hover:text-blue-500">Nosotros</a>
+                <a href="/" className="hover:text-green-700">Inicio</a>
+                <a href="/contacto" className="hover:text-green-700">Contacto</a>
+                <a href="/nosotros" className="hover:text-green-700">Nosotros</a>
                 <LoginModal />
               </div>
             )}

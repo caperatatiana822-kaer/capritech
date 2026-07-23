@@ -16,17 +16,17 @@ export default function Nosotros() {
 
             </p>
             <div className="mt-12 grid md:grid-cols-3 gap-8">
-                <div className="p-6 bg-white rounded-2xl shadow-md">
+                <div className="p-6 bg-white rounded-2xl shadow-md hover:scale-105 transition">
                     <h3 className="font-semibold text-xl mb-2">¿Qué estamos haciendo?</h3>
                     <p
                     className="text-gray-500">Aprendiendo a crear aplicaciones y mejorar nuestras habilidades en programación.</p>
                 </div>
-                <div className="p-6 bg-white rounded-2xl shadow-md">
+                <div className="p-6 bg-white rounded-2xl shadow-md hover:scale-105 transition">
                     <h3 className="font-semibold text-xl mb-2">¿Qué queremos lograr?</h3>
                     <p
                     className="text-gray-500">Terminar nuestro proyecto funcionando correctamente y seguir mejorando como desarrolladores.</p>
                 </div>
-                <div className="p-6 bg-white rounded-2xl shadow-md">
+                <div className="p-6 bg-white rounded-2xl shadow-md hover:scale-105 transition">
                     <h3 className="font-semibold text-xl mb-2">¿Cómo trabajamos?</h3>
                     <p 
                     className="text-gray-500">Trabajamos en equipo, aprendiendo de los errores y apoyándonos entre nosotros.</p>

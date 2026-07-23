@@ -13,37 +13,7 @@ export default function Contact() {
           Contáctanos
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
-          <form className="bg-white shadow-2xl rounded-2xl p-8 flex flex-col gap-5">
-
-            <h3 className="text-2xl font-semibold text-gray-800">
-              Envíanos un mensaje
-            </h3>
-
-            <input 
-              type="text" 
-              placeholder="Nombre completo"
-              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
-
-            <input 
-              type="email" 
-              placeholder="Correo electrónico"
-              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
-
-            <input 
-              type="text" 
-              placeholder="Asunto"
-              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
-
-            <textarea 
-              placeholder="Escribe tu mensaje..."
-              className="p-3 border border-gray-300 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
-
-            <button className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
-              Enviar mensaje
-            </button>
-
-          </form>
+        <div className="flex justify-center max-w-6xl mx-auto ">
 
           <div className="bg-gray-50 rounded-2xl p-8 shadow-lg space-y-4">
 
