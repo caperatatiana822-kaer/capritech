@@ -1,11 +1,20 @@
-const {productionCreate, productionGetById, productionUpdate, productionDelete} = require('../services/productionService');
+const {productionCreate, getAllProduction: getAllProductionService, productionGetById, productionUpdate, productionDelete} = require('../services/productionService');
 const Response = require("../functions/response");
 
-const getAllProduction = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-    res.status(201);
-    res.json({mensaje: "Obteniendo todas las producciones"});
+const getAllProduction = async (req, res) => {
+    try {
+        const productionList = await getAllProductionService();
+        var response = new Response(true, "Producción consultada exitosamente", productionList);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response("error al consultar toda la producción", [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 }
 
 const getProductionById = async (req, res) => {
@@ -27,10 +36,13 @@ const getProductionById = async (req, res) => {
     const production = await productionGetById(id);
     var response = new Response(true, "produccion consultada exitosamente", production);
     res.status(200);
-    res.json(response.json);
-    res.json({mensaje: `Obteniendo la producción con ID: ${id}`});
+    res.json(response.json); 
 } catch (error) {
-    throw error;
+    console.log(error);
+    var response = new Response("error al consultar la producción", [error.message]);
+    res.status(200);
+    res.json(response.json);
+    
     }
 };
 
@@ -97,9 +109,10 @@ const createProduction = async(req, res) => {
     }
 };
 
-const updateProduction = (req, res) => {
+const updateProduction = async (req, res) => {
     try {
     const {id} = req.params;
+    const data = req.body; 
     var errores = [];
     if(!id){
         errores.push({mensaje: "El ID es obligatorio"});
@@ -113,11 +126,10 @@ const updateProduction = (req, res) => {
         res.json(response.json);
         return;
     }
-    const production = productionUpdate(id);
+    const production = await productionUpdate(id, data);
     var response = new Response(true, "produccion actualizada exitosamente", production);
     res.status(200);
-    res.json(response.json);
-    res.json({mensaje: `Actualizando la producción con ID: ${id}`});
+    res.json(response.json)
 } catch (error) {
     console.log(error);
     var response = new Response("error en la actualizacion de produccion", [
@@ -145,12 +157,14 @@ const deleteProduction = async(req, res) => {
         return;
     }
     const production = await productionDelete(id);
-    var response = new Response(true, "Semoviente eliminado exitosamente", production);
+    var response = new Response(true, "Producción eliminada exitosamente", production);
     res.status(200);
     res.json(response.json);
-    res.json({mensaje: `Eliminando la producción con ID: ${id}`});
 } catch (error){
-    throw error;
+    console.log(error);
+    var response = new Response("error al eliminar la producción", [error.message]);
+    res.status(500);
+    res.json(response.json);
     }
 };
 

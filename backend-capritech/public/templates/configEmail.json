@@ -1,0 +1,10 @@
+{
+  "subject": "Confirmacion de correo electronico",
+  "html": "configEmail.html",
+  "params": {
+    "@name": "",
+    "@link": "",
+    "@nameBtn": "",
+    "@cuentaEmpresa": ""
+  }
+}

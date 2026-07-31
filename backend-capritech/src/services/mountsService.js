@@ -12,8 +12,8 @@ const mountCreate = async (data) => {
 
 const getAllMounts = async () => {
     try {
-        const Mounts = await Mounts.findAll();
-        return Mounts;
+        const allMounts = await Mounts.findAll();
+        return allMounts;
     } catch (error) {
         console.log(error);
         throw error;

@@ -12,8 +12,8 @@ const productionCreate = async (data) => {
 
 const getAllProduction = async () => {
     try {
-        const Production = await Production.findAll();
-        return Production;
+        const allProduction = await Production.findAll();
+        return allProduction;
     } catch (error) {
         console.log(error);
         throw error;

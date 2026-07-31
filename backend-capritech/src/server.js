@@ -2,6 +2,7 @@ const express =require('express');
 require("dotenv").config();
 const helmet = require("helmet");
 const morgan = require("morgan");
+const cors = require("cors");
 
 //importar conexion a DB
 const { swaggerUi, swaggerSpec } = require("./docs/swagger");
@@ -11,7 +12,7 @@ const PORT = process.env.PORT||3000;
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("dev"));
-// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //importar rutas
 const authRoute = require("./routes/authRoute");
@@ -31,6 +32,7 @@ const weigthRoute = require("./routes/weigthRoute")
 const limiter = require("./middlewares/rateLimit");
 const errorHandler = require("./middlewares/errorHandler");
 
+app.use(cors());
 app.use(limiter);
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);

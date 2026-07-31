@@ -1,11 +1,20 @@
-const { mountCreate, mountDelete, mountUpdate, mountGetById} = require("../services/mountsService");
+const { mountCreate, mountDelete, mountUpdate, mountGetById, getAllMounts: getAllMountsService } = require("../services/mountsService");
 const Response = require("../functions/response");
 
-const getAllMounts = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-    res.status(201);
-    res.json({mensaje: "Obteniendo todos las montas"});
+const getAllMounts = async (req, res) => {
+    try {
+        const mountsList = await getAllMountsService();
+        var response = new Response(true, "Montas consultadas exitosamente", mountsList);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response("error al consultar todas las montas", [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 }
 
 const getMountById = async (req, res) => {
@@ -18,8 +27,7 @@ const getMountById = async (req, res) => {
     const mount = await mountGetById(id);
     var response = new Response(true, "monta consultada exitosamente", mount);
     res.status(200);
-    res.json(response.json);
-    res.json({ mensaje: `Obteniendo la monta con ID: ${id}` });
+    res.json(response.json)
 } catch (error) {
     console.log(error);
     var response = new Response("error en la consulta de monta", [
@@ -85,15 +93,15 @@ const createMount = async (req, res) => {
 const updateMount = async (req, res) => {
     try {
         const { id } = req.params;
+        const data = req.body; 
         if (!id || id.trim() === "") {
             const response = new Response("error al actualizar la monta",null,"El ID es obligatorio para actualizar una monta" );
             return res.status(400).json(response.json);
         }
-        const mount = await mountUpdate(id);
+        const mount = await mountUpdate(id, data);
         var response = new Response(true, "monta actualizada exitosamente", mount);
         res.status(200);
         res.json(response.json);
-        res.json({ mensaje: `Actualizando la monta con ID: ${id}` });
     } catch (error) {
         console.log(error);
         var response = new Response("error al actualizar la monta", [
@@ -115,7 +123,6 @@ const deleteMount = async (req, res) => {
     var response = new Response(true, "monta eliminada exitosamente", mount);
     res.status(200);
     res.json(response.json);
-    res.json({ mensaje: `Eliminando la monta con ID: ${id}` });
 } catch (error) {
     throw error;
     }

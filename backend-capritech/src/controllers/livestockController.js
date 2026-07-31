@@ -1,11 +1,20 @@
-const { livestockCreate, livestockGetById, livestockUpdate, livestockDelete } = require('../services/livestockService');
+    const { livestockCreate, livestockGetById, livestockUpdate, livestockDelete, getAllLivestock: getAllLivestockService } = require('../services/livestockService');
 const Response = require("../functions/response");
 
-const getAllLivestock = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-    res.status(201);
-    res.json({mensaje: "Obteniendo todos los animales"});
+const getAllLivestock = async (req, res) => {
+    try {
+        const livestockList = await getAllLivestockService();
+        var response = new Response(true, "Semovientes consultados exitosamente", livestockList);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response("error al consultar todos los semovientes", [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 }
 
 const getLivestockById = async(req, res) => {
