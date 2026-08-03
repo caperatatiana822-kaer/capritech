@@ -27,4 +27,8 @@ const Weighing = db.define('Weighing', {
         type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    timestamps: false
 });
+
+module.exports = Weighing;

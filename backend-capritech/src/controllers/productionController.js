@@ -4,12 +4,12 @@ const Response = require("../functions/response");
 const getAllProduction = async (req, res) => {
     try {
         const productionList = await getAllProductionService();
-        var response = new Response(true, "Producción consultada exitosamente", productionList);
+        var response = new Response(true, "Producción consultada exitosamente", productionList, null);
         res.status(200);
         res.json(response.json);
     } catch (error) {
         console.log(error);
-        var response = new Response("error al consultar toda la producción", [
+        var response = new Response(false, "error al consultar toda la producción", null, [
             error.message,
         ])
         res.status(500);
@@ -28,19 +28,19 @@ const getProductionById = async (req, res) => {
         errores.push({mensaje: "El ID no puede estar vacío"});
     }
     if(errores.length > 0){
-        var response = new Response("Error al consultar la produccion", null, errores);
+        var response = new Response(false, "Error al consultar la produccion", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     const production = await productionGetById(id);
-    var response = new Response(true, "produccion consultada exitosamente", production);
+    var response = new Response(true, "produccion consultada exitosamente", production, null);
     res.status(200);
     res.json(response.json); 
 } catch (error) {
     console.log(error);
-    var response = new Response("error al consultar la producción", [error.message]);
-    res.status(200);
+    var response = new Response(false, "error al consultar la producción", null, [error.message]);
+    res.status(500);
     res.json(response.json);
     
     }
@@ -48,11 +48,14 @@ const getProductionById = async (req, res) => {
 
 const createProduction = async(req, res) => {
     try {
-    const {fecha, descripcionElemento, unidadMedida, cantidad, valorUnitario, valorTotal, fechaVencimiento, centroCosto, nombreTraslada, nombreRecibe, instructorTecnico, observaciones} = req.body;
+    const {productionType, fecha, descripcionElemento, unidadMedida, cantidad, valorUnitario, valorTotal, fechaVencimiento, centroCosto, nombreTraslada, nombreRecibe, instructorTecnico, observaciones} = req.body;
     var errores = [];
-    if(!fecha || !descripcionElemento || !unidadMedida || !cantidad || !valorUnitario || !valorTotal || !fechaVencimiento || !centroCosto || !nombreTraslada || !nombreRecibe || !instructorTecnico || !observaciones)
+    if(!productionType || !fecha || !descripcionElemento || !unidadMedida || !cantidad || !valorUnitario || !valorTotal || !fechaVencimiento || !centroCosto || !nombreTraslada || !nombreRecibe || !instructorTecnico || !observaciones)
     {
         errores.push({mensaje: "Todos los campos son obligatorios"});
+    }
+    if(productionType == ""){
+        errores.push({mensaje: "El campo productionType no puede estar vacio"});
     }
     if(fecha == ""){
         errores.push({mensaje: "El campo fecha no puede estar vacio"});
@@ -88,20 +91,20 @@ const createProduction = async(req, res) => {
         errores.push({mensaje: "El campo observaciones no puede estar vacio"});
     }
     if(errores.length > 0){
-        var response = new Response("Error en la creación de la producción", null, errores);
+        var response = new Response(false, "Error en la creación de la producción", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
 
-    data = {fecha, descripcionElemento, unidadMedida, cantidad, valorUnitario, valorTotal, fechaVencimiento, centroCosto, nombreTraslada, nombreRecibe, instructorTecnico, observaciones};
+    data = {productionType, fecha, descripcionElemento, unidadMedida, cantidad, valorUnitario, valorTotal, fechaVencimiento, centroCosto, nombreTraslada, nombreRecibe, instructorTecnico, observaciones};
     const production = await productionCreate(data);
-    var response = new Response(true, "Producción creada exitosamente", production);
+    var response = new Response(true, "Producción creada exitosamente", production, null);
     res.status(201);
     res.json(response.json);
 } catch (error) {
     console.log(error);
-    var response = new Response("error en la creacion de produccion", [
+    var response = new Response(false, "error en la creacion de produccion", null, [
         error.message,
     ])
     res.status(500);
@@ -121,18 +124,18 @@ const updateProduction = async (req, res) => {
         errores.push({mensaje: "El ID no puede estar vacío"});
     }
     if(errores.length > 0){
-        var response = new Response("Error al actualizar la produccion", null, errores);
+        var response = new Response(false, "Error al actualizar la produccion", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     const production = await productionUpdate(id, data);
-    var response = new Response(true, "produccion actualizada exitosamente", production);
+    var response = new Response(true, "produccion actualizada exitosamente", production, null);
     res.status(200);
     res.json(response.json)
 } catch (error) {
     console.log(error);
-    var response = new Response("error en la actualizacion de produccion", [
+    var response = new Response(false, "error en la actualizacion de produccion", null, [
         error.message,
     ])
     res.status(500);
@@ -151,18 +154,18 @@ const deleteProduction = async(req, res) => {
         errores.push({mensaje: "El ID no puede estar vacío"});
     }
     if(errores.length > 0){
-        var response = new Response("Error al eliminar la produccion", null, errores);
+        var response = new Response(false, "Error al eliminar la produccion", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     const production = await productionDelete(id);
-    var response = new Response(true, "Producción eliminada exitosamente", production);
+    var response = new Response(true, "Producción eliminada exitosamente", production, null);
     res.status(200);
     res.json(response.json);
 } catch (error){
     console.log(error);
-    var response = new Response("error al eliminar la producción", [error.message]);
+    var response = new Response(false, "error al eliminar la producción", null, [error.message]);
     res.status(500);
     res.json(response.json);
     }

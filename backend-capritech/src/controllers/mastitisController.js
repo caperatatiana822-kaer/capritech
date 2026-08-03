@@ -1,19 +1,60 @@
-const {mastitisCreate} = require('../services/mastitisService');
+const {
+    mastitisCreate,
+    getAllMastitis: getAllMastitisService,
+    getIdMastitis,
+    updateMastitis: updateMastitisService,
+    deleteIdMastitis
+} = require('../services/mastitisService');
 const Response = require("../functions/response");
 
-const getAllMastitis = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-    res.status(201);
-    res.json({mensaje: "Obteniendo todos los casos de mastitis"});
+const getAllMastitis = async (req, res) => {
+    try {
+        const mastitisList = await getAllMastitisService();
+        var response = new Response(true, "Casos de mastitis consultados exitosamente", mastitisList, null);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error al consultar todos los casos de mastitis", null, [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 }
 
-const getMastitisById = (req, res) => {
+const getMastitisById = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Obteniendo el caso de mastitis con ID: ${id}`});
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al consultar el caso de mastitis", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const mastitis = await getIdMastitis(id);
+    var response = new Response(true, "Caso de mastitis consultado exitosamente", mastitis, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la consulta del caso de mastitis", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
 const createMastitis = async(req, res) => {
+    try {
     const {chapeta, nombreAnimal, fechaDiagnostico, resultadoDeLaPrueba} = req.body;
 
     var errores = [];
@@ -35,7 +76,7 @@ const createMastitis = async(req, res) => {
     }
 
     if(errores.length > 0){
-        var response = new Response("Error en la creación del caso de mastitis", null, errores);
+        var response = new Response(false, "Error en la creación del caso de mastitis", null, errores);
         res.status(400);
         res.json(response.json);
         return;
@@ -43,19 +84,76 @@ const createMastitis = async(req, res) => {
 
     data = {chapeta, nombreAnimal, fechaDiagnostico, resultadoDeLaPrueba };
     const mastitis = await mastitisCreate(data);
-    var response = new Response(true, "Caso de mastitis creado exitosamente", mastitis);
+    var response = new Response(true, "Caso de mastitis creado exitosamente", mastitis, null);
     res.status(201);
     res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la creación del caso de mastitis", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
-const updateMastitis = (req, res) => {
+const updateMastitis = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Actualizando el caso de mastitis con ID: ${id}`});
+    const data = req.body;
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al actualizar el caso de mastitis", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const mastitis = await updateMastitisService(id, data);
+    var response = new Response(true, "Caso de mastitis actualizado exitosamente", mastitis, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la actualización del caso de mastitis", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
-const deleteMastitis = (req, res) => {
+const deleteMastitis = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Eliminando el caso de mastitis con ID: ${id}`});
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al eliminar el caso de mastitis", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const mastitis = await deleteIdMastitis(id);
+    var response = new Response(true, "Caso de mastitis eliminado exitosamente", mastitis, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error al eliminar el caso de mastitis", null, [error.message]);
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
 module.exports = {

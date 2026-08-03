@@ -1,15 +1,15 @@
-    const { livestockCreate, livestockGetById, livestockUpdate, livestockDelete, getAllLivestock: getAllLivestockService } = require('../services/livestockService');
+const { livestockCreate, livestockGetById, livestockUpdate, livestockDelete, getAllLivestock: getAllLivestockService } = require('../services/livestockService');
 const Response = require("../functions/response");
 
 const getAllLivestock = async (req, res) => {
     try {
         const livestockList = await getAllLivestockService();
-        var response = new Response(true, "Semovientes consultados exitosamente", livestockList);
+        var response = new Response(true, "Semovientes consultados exitosamente", livestockList, null);
         res.status(200);
         res.json(response.json);
     } catch (error) {
         console.log(error);
-        var response = new Response("error al consultar todos los semovientes", [
+        var response = new Response(false, "error al consultar todos los semovientes", null, [
             error.message,
         ])
         res.status(500);
@@ -28,18 +28,18 @@ const getLivestockById = async(req, res) => {
         errores.push({mensaje: "El ID no puede estar vacío"});
     }
     if(errores.length > 0){
-        var response = new Response("Error al consultar el semoviente", null, errores);
+        var response = new Response(false, "Error al consultar el semoviente", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     const livestock = await livestockGetById(id);
-    var response = new Response(true, "Semoviente consultado exitosamente", livestock);
+    var response = new Response(true, "Semoviente consultado exitosamente", livestock, null);
     res.status(200);
     res.json(response.json);
 } catch (error) {
     console.log(error);
-    var response = new Response("error en la consulta de semoviente", [
+    var response = new Response(false, "error en la consulta de semoviente", null, [
         error.message,
     ])
     res.status(500);
@@ -76,19 +76,19 @@ const createLivestock = async(req, res) => {
         errores.push({mensaje: "El campo observaciones no puede estar vacio"});
     }
     if(errores.length > 0){
-        var response = new Response("Error en la creación del semoviente", null, errores);
+        var response = new Response(false, "Error en la creación del semoviente", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     data = {chapeta, raza, nombre, fechaNacimiento, sexo, etapaProduccion, observaciones};
     const livestock = await livestockCreate(data);
-    var response = new Response(true, "Semoviente creado exitosamente", livestock);
+    var response = new Response(true, "Semoviente creado exitosamente", livestock, null);
     res.status(201);
     res.json(response.json);
 } catch (error) {
     console.log(error);
-    var response = new Response("error en la creacion de semoviente", [
+    var response = new Response(false, "error en la creacion de semoviente", null, [
         error.message,
     ])
     res.status(500);
@@ -107,18 +107,18 @@ const updateLivestock = async(req, res) => {
         errores.push({mensaje: "El ID no puede estar vacío"});
     }
     if(errores.length > 0){
-        var response = new Response("Error al actualizar el semoviente", null, errores);
+        var response = new Response(false, "Error al actualizar el semoviente", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     const livestock = await livestockUpdate(id);
-    var response = new Response(true, "Semoviente actualizado exitosamente", livestock);
+    var response = new Response(true, "Semoviente actualizado exitosamente", livestock, null);
     res.status(200);
     res.json(response.json);
 } catch (error) {
     console.log(error);
-    var response = new Response("error en la actualizacion de semoviente", [
+    var response = new Response(false, "error en la actualizacion de semoviente", null, [
         error.message,
     ])
     res.status(500);
@@ -137,13 +137,13 @@ const deleteLivestock = async(req, res) => {
         errores.push({mensaje: "El ID no puede estar vacío"});
     }
     if(errores.length > 0){
-        var response = new Response("Error al eliminar el semoviente", null, errores);
+        var response = new Response(false, "Error al eliminar el semoviente", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     const livestock = await livestockDelete(id);
-    var response = new Response(true, "Semoviente eliminado exitosamente", livestock);
+    var response = new Response(true, "Semoviente eliminado exitosamente", livestock, null);
     res.status(200);
     res.json(response.json);
 } catch (error) {

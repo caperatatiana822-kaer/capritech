@@ -11,8 +11,8 @@ const birthsCreate = async (data) => {
 
 const getAllbirths = async () => {
     try {
-        const births = await births.findAll();
-        return births;
+        const allBirths = await births.findAll();
+        return allBirths;
     } catch (error) {
         console.log(error);
     }

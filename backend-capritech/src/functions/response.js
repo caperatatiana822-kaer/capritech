@@ -1,24 +1,16 @@
-
- class Response {
-    constructor(message, info, error){
+class Response {
+    constructor(success, message, data = null, error = null) {
+        this.success = success;
         this.message = message;
-        this.info = info;
+        this.data = data;
         this.error = error;
     }
 
-    get json(){
-        return{
-        message: this.message,
-        info: this.info? this.info : {},
-        error: this.error
-        }
-    }
-    get success(){
-        return{
-            succes: true,
-            code: 0,
+    get json() {
+        return {
+            success: this.success,
             message: this.message,
-            info: this.info? this.info : {},
+            data: this.data ? this.data : {},
             error: this.error
         }
     }

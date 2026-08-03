@@ -1,23 +1,60 @@
-const { feedingCreate } = require('../services/feedingService');
+const {
+    feedingCreate,
+    getAllFeeding: getAllFeedingService,
+    getIdFeeding,
+    updateFeeding: updateFeedingService,
+    deleteIdFeeding
+} = require('../services/feedingService');
 const Response = require("../functions/response");
 
-const getAllFeeding = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-
-    res.status(200);
-    res.json({ mensaje: "Obteniendo todas las alimentaciones" });
+const getAllFeeding = async (req, res) => {
+    try {
+        const feedingList = await getAllFeedingService();
+        var response = new Response(true, "Alimentaciones consultadas exitosamente", feedingList, null);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error al consultar todas las alimentaciones", null, [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 };
 
-const getFeedingById = (req, res) => {
+const getFeedingById = async (req, res) => {
+    try {
     const { id } = req.params;
-
-    res.json({
-        mensaje: `Obteniendo la alimentación con ID: ${id}`
-    });
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al consultar la alimentación", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const feeding = await getIdFeeding(id);
+    var response = new Response(true, "Alimentación consultada exitosamente", feeding, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la consulta de la alimentación", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 };
 
 const createFeeding = async (req, res) => {
+    try {
     const { fecha, hora, responsable, alimento, cantidad} = req.body;
 
     var errores = [];
@@ -59,7 +96,7 @@ const createFeeding = async (req, res) => {
     }
 
     if (errores.length > 0) {
-        var response = new Response("Error en la creación de la alimentación", null,  errores );
+        var response = new Response(false, "Error en la creación de la alimentación", null, errores);
         res.status(400);
         res.json(response.json);
         return;
@@ -67,25 +104,76 @@ const createFeeding = async (req, res) => {
 
     data = {fecha, hora, responsable, alimento, cantidad};
     const feeding = await feedingCreate(data);
-    var response = new Response( true, "Alimentación creada exitosamente", feeding );
+    var response = new Response(true, "Alimentación creada exitosamente", feeding, null);
     res.status(201);
     res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la creación de alimentación", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 };
 
-const updateFeeding = (req, res) => {
+const updateFeeding = async (req, res) => {
+    try {
     const { id } = req.params;
-
-    res.json({
-        mensaje: `Actualizando la alimentación con ID: ${id}`
-    });
+    const data = req.body;
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al actualizar la alimentación", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const feeding = await updateFeedingService(id, data);
+    var response = new Response(true, "Alimentación actualizada exitosamente", feeding, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la actualización de alimentación", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 };
 
-const deleteFeeding = (req, res) => {
+const deleteFeeding = async (req, res) => {
+    try {
     const { id } = req.params;
-
-    res.json({
-        mensaje: `Eliminando la alimentación con ID: ${id}`
-    });
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al eliminar la alimentación", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const feeding = await deleteIdFeeding(id);
+    var response = new Response(true, "Alimentación eliminada exitosamente", feeding, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error al eliminar alimentación", null, [error.message]);
+    res.status(500);
+    res.json(response.json);
+    }
 };
 
 module.exports = {

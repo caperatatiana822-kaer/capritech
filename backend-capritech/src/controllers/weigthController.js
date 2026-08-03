@@ -1,19 +1,60 @@
-const {weigthCreate} = require('../services/weightService');
+const {
+    weigthCreate,
+    getAllWeigthings,
+    getIdWeigthing,
+    updateWeigthing,
+    deleteIdWeigthing
+} = require('../services/weightService');
 const Response = require("../functions/response");
 
-const getAllWeigth = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-    res.status(201);
-    res.json({mensaje: "Obteniendo todos los pesajes"});
+const getAllWeigth = async (req, res) => {
+    try {
+        const weigthList = await getAllWeigthings();
+        var response = new Response(true, "Pesajes consultados exitosamente", weigthList, null);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error al consultar todos los pesajes", null, [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 }
 
-const getWeigthById = (req, res) => {
+const getWeigthById = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Obteniendo el pesaje con ID: ${id}`});
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al consultar el pesaje", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const weighing = await getIdWeigthing(id);
+    var response = new Response(true, "Pesaje consultado exitosamente", weighing, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la consulta del pesaje", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
 const createWeigth = async(req, res) => {
+    try {
     const {
         fechaPesaje,
         chapeta,
@@ -49,7 +90,7 @@ const createWeigth = async(req, res) => {
     }
 
     if(errores.length > 0){
-        var response = new Response("Error en la creación del pesaje", null, errores);
+        var response = new Response(false, "Error en la creación del pesaje", null, errores);
         res.status(400);
         res.json(response.json);
         return;
@@ -65,19 +106,76 @@ const createWeigth = async(req, res) => {
 
     const weighing = await weigthCreate(data);
 
-    var response = new Response(true, "Pesaje creado exitosamente", weighing);
+    var response = new Response(true, "Pesaje creado exitosamente", weighing, null);
     res.status(201);
     res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la creación de pesaje", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
-const updateWeigth = (req, res) => {
+const updateWeigth = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Actualizando el pesaje con ID: ${id}`});
+    const data = req.body;
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al actualizar el pesaje", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const weighing = await updateWeigthing(id, data);
+    var response = new Response(true, "Pesaje actualizado exitosamente", weighing, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la actualización de pesaje", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
-const deleteWeigth = (req, res) => {
+const deleteWeigth = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Eliminando el pesaje con ID: ${id}`});
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al eliminar el pesaje", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const weighing = await deleteIdWeigthing(id);
+    var response = new Response(true, "Pesaje eliminado exitosamente", weighing, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error al eliminar pesaje", null, [error.message]);
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
 module.exports = {

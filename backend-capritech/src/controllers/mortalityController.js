@@ -1,19 +1,60 @@
-const { mortalityCreate } = require('../services/mortalityService');
+const {
+    mortalityCreate,
+    getAllMortality: getAllMortalityService,
+    getIdMortality,
+    updateMortality: updateMortalityService,
+    deleteIdMortality
+} = require('../services/mortalityService');
 const Response = require("../functions/response");
 
-const getAllMortality = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-    res.status(201);
-    res.json({mensaje: "Obteniendo todas las mortalidades"});
+const getAllMortality = async (req, res) => {
+    try {
+        const mortalityList = await getAllMortalityService();
+        var response = new Response(true, "Mortalidades consultadas exitosamente", mortalityList, null);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error al consultar todas las mortalidades", null, [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 }
 
-const getMortalityById = (req, res) => {
+const getMortalityById = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Obteniendo la mortalidad con ID: ${id}`});
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al consultar la mortalidad", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const mortality = await getIdMortality(id);
+    var response = new Response(true, "Mortalidad consultada exitosamente", mortality, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la consulta de la mortalidad", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
 const createMortality = async(req, res) => {
+    try {
     const {fecha, chapeta, nombre, sexo, estadodeproduccion, diagnosticopresuntivo, generarreportedemortalidad} = req.body;
     var errores = [];
     if(
@@ -57,26 +98,83 @@ const createMortality = async(req, res) => {
     }
 
     if(errores.length > 0){
-        var response = new Response("Error en la creación de la mortalidad", null, errores);
+        var response = new Response(false, "Error en la creación de la mortalidad", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
     data = { fecha, chapeta, nombre, sexo, estadodeproduccion, diagnosticopresuntivo, generarreportedemortalidad };
     const mortality = await mortalityCreate(data);
-    var response = new Response(true, "Mortalidad creada exitosamente", mortality );
+    var response = new Response(true, "Mortalidad creada exitosamente", mortality, null );
     res.status(201);
     res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la creación de mortalidad", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
-const updateMortality = (req, res) => {
+const updateMortality = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Actualizando la mortalidad con ID: ${id}`});
+    const data = req.body;
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al actualizar la mortalidad", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const mortality = await updateMortalityService(id, data);
+    var response = new Response(true, "Mortalidad actualizada exitosamente", mortality, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error en la actualización de mortalidad", null, [
+        error.message,
+    ])
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
-const deleteMortality = (req, res) => {
+const deleteMortality = async (req, res) => {
+    try {
     const {id} = req.params;
-    res.json({mensaje: `Eliminando la mortalidad con ID: ${id}`});
+    var errores = [];
+    if (!id) {
+        errores.push({ mensaje: "El ID es obligatorio" });
+    }
+    if (id == "") {
+        errores.push({ mensaje: "El ID no puede estar vacío" });
+    }
+    if (errores.length > 0) {
+        var response = new Response(false, "Error al eliminar la mortalidad", null, errores);
+        res.status(400);
+        res.json(response.json);
+        return;
+    }
+    const mortality = await deleteIdMortality(id);
+    var response = new Response(true, "Mortalidad eliminada exitosamente", mortality, null);
+    res.status(200);
+    res.json(response.json);
+} catch (error) {
+    console.log(error);
+    var response = new Response(false, "error al eliminar mortalidad", null, [error.message]);
+    res.status(500);
+    res.json(response.json);
+    }
 }
 
 module.exports = {

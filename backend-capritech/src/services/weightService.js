@@ -1,48 +1,54 @@
-const weight = require( '../models/weigthModel' );
-const createweight = async ( data ) => {
+const Weighing = require('../models/weigthModel');
+
+const weigthCreate = async (data) => {
     try {
-        const newweight = await weight.create( data );
-        return newweight;
-    } catch ( error ) {
-        console.log( error );
+        const newWeighing = await Weighing.create(data);
+        return newWeighing;
+    } catch (error) {
+        console.log(error);
     }
 };
-const getallweight = async () => {
+
+const getAllWeigthings = async () => {
     try {
-        const weightRecords = await weight.findAll();
-        return weightRecords;
-    } catch ( error ) {
-        console.log( error );
+        const weighingRecords = await Weighing.findAll();
+        return weighingRecords;
+    } catch (error) {
+        console.log(error);
     }
 };
-const getIdweight = async ( id ) => {
+
+const getIdWeigthing = async (id) => {
     try {
-        const weightRecord = await weight.findByPk( id );
-        return weightRecord;
-    } catch ( error ) {
-        console.log( error );
+        const weighingRecord = await Weighing.findOne({where: {id}});
+        return weighingRecord;
+    } catch (error) {
+        console.log(error);
     }
 };
-const deleteIdweight = async ( id ) => {
+
+const deleteIdWeigthing = async (id) => {
     try {
-        const deletedweight = await weight.destroy( { where: { id: id } } );
-        return deletedweight;
-    } catch ( error ) {
-        console.log( error );
+        const deletedWeighing = await Weighing.destroy({where: {id}});
+        return deletedWeighing;
+    } catch (error) {
+        console.log(error);
     }
 };
-const updateweight = async ( id, data ) => {
+
+const updateWeigthing = async (id, data) => {
     try {
-        const updatedweight = await weight.update( data, { where: { id: id } } );
-        return updatedweight;
-    } catch ( error ) {
-        console.log( error );
+        const updatedWeighing = await Weighing.update(data, {where: {id}});
+        return updatedWeighing;
+    } catch (error) {
+        console.log(error);
     }
 };
+
 module.exports = {
-    createweight,
-    getallweight,
-    getIdweight,
-    deleteIdweight,
-    updateweight
+    weigthCreate,
+    getAllWeigthings,
+    getIdWeigthing,
+    deleteIdWeigthing,
+    updateWeigthing
 };

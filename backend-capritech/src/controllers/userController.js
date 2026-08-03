@@ -1,14 +1,23 @@
-const { userCreate, userGetById, usuarioDelete, userUpdate } = require('../services/userService');
+const { userCreate, userGetById, usuarioDelete, userUpdate, getAllUsers: getAllUsersService } = require('../services/userService');
 const Response = require("../functions/response");
 const path = require("path");
 const fs = require("fs");
 const { sendEmail } = require("../services/emailService");
 
-const getAllUsers = (req, res) => {
-    const body = req.body;
-    console.log("body recibido: ", body);
-    res.status(201);
-    res.json({ mensaje: "Obteniendo todos los usuarios" });
+const getAllUsers = async (req, res) => {
+    try {
+        const usersList = await getAllUsersService();
+        var response = new Response(true, "Usuarios consultados exitosamente", usersList, null);
+        res.status(200);
+        res.json(response.json);
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error al consultar todos los usuarios", null, [
+            error.message,
+        ])
+        res.status(500);
+        res.json(response.json);
+    }
 }
 
 const getUserById = async (req, res) => {
@@ -22,19 +31,18 @@ const getUserById = async (req, res) => {
             errores.push({ mensaje: "El ID no puede estar vacío" });
         }
         if (errores.length > 0) {
-            var response = new Response("Error al consultar el usuario", null, errores);
+            var response = new Response(false, "Error al consultar el usuario", null, errores);
             res.status(400);
             res.json(response.json);
             return;
         }
         const user = await userGetById(id);
-        var response = new Response(true, "produccion consultada exitosamente", user);
+        var response = new Response(true, "Usuario consultado exitosamente", user, null);
         res.status(200);
         res.json(response.json);
-        res.json({ mensaje: `Obteniendo el usuario con ID: ${id}` });
     } catch (error) {
         console.log(error);
-        var response = new Response("error en la consulta de usuario", [
+        var response = new Response(false, "error en la consulta de usuario", null, [
             error.message,
         ])
         res.status(500);
@@ -67,7 +75,7 @@ const createUser = async (req, res) => {
             errores.push({ mensaje: "El campo postJob no puede estar vacio" });
         }
         if (errores.length > 0) {
-            var response = new Response("Error en la creación del usuario", null, errores);
+            var response = new Response(false, "Error en la creación del usuario", null, errores);
             res.status(400);
             res.json(response.json);
             return;
@@ -76,18 +84,18 @@ const createUser = async (req, res) => {
         const user = await userCreate(data);
         console.log("Usuario creado:", user);
 
-        // PASO 1: leer configuración → plantilla envío JSON
+        // crear configuracion 
         let templatePath = path.join(process.cwd(), "public", "templates", "configEmail.json");
         const confirmEmailTemplate = fs.readFileSync(templatePath, "utf-8");
 
-        // PASO 2: sacar propiedades (código)
+        // leerla y sacar prop 
         const dataTemplate = JSON.parse(confirmEmailTemplate);
 
-        // PASO 3: leer archivo HTML
+        // leer archivo html
         const htmlPath = path.join(process.cwd(), "public", "templates", dataTemplate.html);
         const templatehtml = fs.readFileSync(htmlPath, "utf-8");
 
-        // PASO 4: reemplazar propiedades
+        // reemplaza propiedades
         var htmlModificado = templatehtml.toString();
         const valores = {
             "@name": user.name,
@@ -100,16 +108,16 @@ const createUser = async (req, res) => {
             htmlModificado = htmlModificado.replace(regex, valores[key]);
         }
 
-        // PASO 5: enviar correo
+        // envio del correo
         await sendEmail(user.email, dataTemplate.subject, "Confirma tu correo para activar tu cuenta", htmlModificado);
 
         var response = new Response(true, "Usuario creado y correo enviado exitosamente", user);
-        var response = new Response(true, "Usuario creado exitosamente", user);
+        var response = new Response(true, "Usuario creado exitosamente", user, null);
         res.status(201);
         res.json(response.json);
     } catch (error) {
         console.log(error);
-        var response = new Response("error en la creacion de usuario", [
+        var response = new Response(false, "error en la creacion de usuario", null, [
             error.message,
         ])
         res.status(500);
@@ -127,19 +135,18 @@ const updateUser = async (req, res) => {
             errores.push({ mensaje: "El ID no puede estar vacío" });
         }
         if (errores.length > 0) {
-            var response = new Response("Error al actualizar el usuario", null, errores);
+            var response = new Response(false, "Error al actualizar el usuario", null, errores);
             res.status(400);
             res.json(response.json);
             return;
         }
         const user = await userUpdate(id);
-        var response = new Response(true, "usuario actualizado exitosamente", user);
+        var response = new Response(true, "usuario actualizado exitosamente", user, null);
         res.status(200);
         res.json(response.json);
-        res.json({ mensaje: `Actualizando el usuario con ID: ${id}` });
     } catch (error) {
         console.log(error);
-        var response = new Response("error en la actualizacion de usuario", [
+        var response = new Response(false, "error en la actualizacion de usuario", null, [
             error.message,
         ])
         res.status(500);
@@ -158,18 +165,20 @@ const deleteUser = async (req, res) => {
             errores.push({ mensaje: "El ID no puede estar vacío" });
         }
         if (errores.length > 0) {
-            var response = new Response("Error al eliminar el usuario", null, errores);
+            var response = new Response(false, "Error al eliminar el usuario", null, errores);
             res.status(400);
             res.json(response.json);
             return;
         }
         const user = await usuarioDelete(id);
-        var response = new Response(true, "usuario eliminado exitosamente", user);
+        var response = new Response(true, "usuario eliminado exitosamente", user, null);
         res.status(200);
         res.json(response.json);
-        res.json({ mensaje: `Eliminando el usuario con ID: ${id}` });
     } catch (error) {
-        throw error;
+        console.log(error);
+        var response = new Response(false, "error al eliminar usuario", null, [error.message]);
+        res.status(500);
+        res.json(response.json);
     }
 }
 module.exports = {

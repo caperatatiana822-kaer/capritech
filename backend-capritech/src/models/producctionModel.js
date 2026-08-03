@@ -7,6 +7,10 @@ const Production = db.define('Production', {
         primaryKey: true,
         autoIncrement: true
     },
+    productionType: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     fecha: {
         type: DataTypes.DATE,
         allowNull: false
