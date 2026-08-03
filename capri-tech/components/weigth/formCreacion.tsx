@@ -11,9 +11,14 @@ function FormCreationWeight() {
         <form className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Animal</label>
-            <input type="text" id="animal" name="animal" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta del Animal</label>
+            <select id="animal" name="animal" required
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
+              <option value="">Selecciona una chapeta</option>
+              {/* Estas opciones van a venir de tu backend, del listado de animales */}
+              <option value="5">5</option>
+              <option value="3">3</option>
+            </select>
           </div>
 
           <div>
@@ -24,8 +29,13 @@ function FormCreationWeight() {
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">Ganancia de Peso</label>
-            <input type="number" id="peso" name="peso" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <div className="relative">
+              <input type="number" id="peso" name="peso" step="0.1" min="0" required
+                className="w-full border border-gray-300 rounded-lg p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-gray-500">
+                kg
+              </span>
+            </div>
           </div>
 
           <div>

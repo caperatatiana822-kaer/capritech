@@ -1,4 +1,38 @@
+"use client"
+
+import { useState, useEffect } from "react"
+
+function formatearFecha(fechaISO: string) {
+  if (!fechaISO) return "—"
+  const fecha = new Date(fechaISO)
+  return fecha.toLocaleDateString("es-CO")
+}
+
+function formatearMoneda(valor: number) {
+  if (valor === null || valor === undefined) return "—"
+  return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(valor)
+}
+
 export default function TablaProduction() {
+  const [produccion, setProduccion] = useState([])
+  const [cargando, setCargando] = useState(true)
+
+  useEffect(function cargarProduccion() {
+    async function obtenerProduccion() {
+      try {
+        const respuesta = await fetch("http://localhost:3001/api/production/productionAll")
+        const datos = await respuesta.json()
+        setProduccion(datos.data)
+      } catch (error) {
+        console.error("Error al cargar la producción:", error)
+      } finally {
+        setCargando(false)
+      }
+    }
+
+    obtenerProduccion()
+  }, [])
+
   return (
     <div className="flex justify-center py-10 px-6 ">
       <div className="w-full max-w-7xl bg-white shadow-lg rounded-2xl overflow-hidden">
@@ -13,6 +47,7 @@ export default function TablaProduction() {
 
             <thead>
               <tr className="bg-green-100 text-green-800">
+                <th className="p-3 text-left">Tipo</th>
                 <th className="p-3 text-left">Fecha</th>
                 <th className="p-3 text-left">Descripción</th>
                 <th className="p-3 text-left">Unidad</th>
@@ -29,35 +64,41 @@ export default function TablaProduction() {
             </thead>
 
             <tbody>
-              <tr className="border-b hover:bg-green-50 transition">
-                <td className="p-3">12/05/2026</td>
-                <td className="p-3">Leche de cabra</td>
-                <td className="p-3">Litros</td>
-                <td className="p-3">20 L</td>
-                <td className="p-3">$2.000</td>
-                <td className="p-3">$20.000</td>
-                <td className="p-3">15/05/2026</td>
-                <td className="p-3">Ninguno</td>
-                <td className="p-3">Jhon</td>
-                <td className="p-3">Carlos</td>
-                <td className="p-3">Sandra</td>
-                <td className="p-3">Ninguna</td>
-              </tr>
+              {cargando && (
+                <tr>
+                  <td colSpan={13} className="p-6 text-center text-gray-500">
+                    Cargando producción...
+                  </td>
+                </tr>
+              )}
 
-              <tr className="border-b hover:bg-green-50 transition">
-                <td className="p-3">12/05/2026</td>
-                <td className="p-3">Leche de cabra</td>
-                <td className="p-3">Litros</td>
-                <td className="p-3">20 L</td>
-                <td className="p-3">$2.000</td>
-                <td className="p-3">$20.000</td>
-                <td className="p-3">15/05/2026</td>
-                <td className="p-3">Ninguno</td>
-                <td className="p-3">Jhon</td>
-                <td className="p-3">Carlos</td>
-                <td className="p-3">Sandra</td>
-                <td className="p-3">Ninguna</td>
-              </tr>
+              {!cargando && produccion.length === 0 && (
+                <tr>
+                  <td colSpan={13} className="p-6 text-center text-gray-500">
+                    Todavía no hay producción registrada.
+                  </td>
+                </tr>
+              )}
+
+              {!cargando && produccion.map(function renderFila(item: any) {
+                return (
+                  <tr key={item.id} className="border-b hover:bg-green-50 transition">
+                    <td className="p-3 capitalize">{item.productionType}</td>
+                    <td className="p-3">{formatearFecha(item.fecha)}</td>
+                    <td className="p-3">{item.descripcionElemento}</td>
+                    <td className="p-3">{item.unidadMedida}</td>
+                    <td className="p-3">{item.cantidad}</td>
+                    <td className="p-3">{formatearMoneda(item.valorUnitario)}</td>
+                    <td className="p-3">{formatearMoneda(item.valorTotal)}</td>
+                    <td className="p-3">{formatearFecha(item.fechaVencimiento)}</td>
+                    <td className="p-3">{item.centroCosto}</td>
+                    <td className="p-3">{item.nombreTraslada}</td>
+                    <td className="p-3">{item.nombreRecibe}</td>
+                    <td className="p-3">{item.instructorTecnico}</td>
+                    <td className="p-3">{item.observaciones || "—"}</td>
+                  </tr>
+                )
+              })}
             </tbody>
 
           </table>

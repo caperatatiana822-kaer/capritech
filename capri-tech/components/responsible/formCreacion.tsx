@@ -18,14 +18,41 @@ function FormCreacionResponsibles() {
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">Tipo</label>
-            <input type="text" id="tipo" name="tipo" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <select id="tipo" name="tipo" required
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
+              <option value="">Selecciona un tipo</option>
+              <option value="aprendiz">Aprendiz</option>
+              <option value="sena_empresa">SENA Empresa</option>
+              <option value="pasante">Pasante</option>
+              <option value="gestor">Gestor</option>
+              <option value="instructor">Instructor</option>
+              <option value="veterinario">Veterinario</option>
+            </select>
           </div>
 
           <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-gray-700 mb-2">Documento</label>
             <input type="text" id="documento" name="documento" required
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Actividad a Cargo</label>
+            <select id="actividad" name="actividad" required
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
+              <option value="">Selecciona una actividad</option>
+              <option value="inventario">Ordeño</option>
+              <option value="produccion">Pesaje</option>
+              <option value="pesaje">Montas</option>
+              <option value="famacha">Prueba de famacha</option>
+              <option value="montas">Prueba de mastitis</option>
+              <option value="nacimientos">Nacimientos</option>
+              <option value="alimentacion">Alimentación</option>
+              <option value="mortalidad">Pastoreo</option>
+              <option value="vacunacion">Vacunación</option>
+              <option value="mastitis">Actividades de la unidad</option>
+              <option value="administracion">Administración general</option>
+            </select>
           </div>
 
           <div className="md:col-span-2 flex justify-end mt-4">

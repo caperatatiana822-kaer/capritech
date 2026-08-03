@@ -11,9 +11,13 @@ function FormCreacionMortality() {
         <form className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Animal</label>
-            <input type="text" id="animal" name="animal" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta del Animal</label>
+            <select id="animal" name="animal" required
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
+              <option value="">Selecciona una chapeta</option>
+              <option value="5">5</option>
+              <option value="3">3</option>
+            </select>
           </div>
 
           <div>
@@ -22,13 +26,7 @@ function FormCreacionMortality() {
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Estado de Producción</label>
-            <input type="text" id="estado" name="estado" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
-          </div>
-
-          <div>
+          <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-gray-700 mb-2">Diagnóstico</label>
             <input type="text" id="diagnostico" name="diagnostico" required
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>

@@ -1,7 +1,7 @@
 function DashboardPage() {
     return (
         <>
-        <h1>hola desde Dashboard</h1>
+        <h1>Bienvenido a CapriTech</h1>
         </>
 
     );

@@ -56,20 +56,8 @@ function FormCreacionNacimiento() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Nombre Madre</label>
-            <input type="text" name="nombreMadre"
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
-          </div>
-
-          <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta Padre</label>
             <input type="text" name="chapetaPadre"
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Nombre Padre</label>
-            <input type="text" name="nombrePadre"
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
           </div>
 

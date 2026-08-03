@@ -16,6 +16,7 @@ export default function TablaResponsables() {
                 <th className="p-3 text-left">Nombre</th>
                 <th className="p-3 text-left">Documento</th>
                 <th className="p-3 text-left">Tipo de Responsable</th>
+                <th className="p-3 text-left">Actividad a Cargo</th>
               </tr>
             </thead>
 
@@ -24,12 +25,14 @@ export default function TablaResponsables() {
                 <td className="p-3">Andrés</td>
                 <td className="p-3">CC 1111111</td>
                 <td className="p-3">SENA Empresa</td>
+                <td className="p-3">Vacunación</td>
               </tr>
 
               <tr className="border-b hover:bg-green-50 transition">
                 <td className="p-3">Camilo</td>
                 <td className="p-3">CC 45385</td>
                 <td className="p-3">Pasante</td>
+                <td className="p-3">Inventario</td>
               </tr>
             </tbody>
 

@@ -12,21 +12,33 @@ function FormCreacionFamacha() {
 
         <form className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Nombre del Animal</label>
-            <input type="text" id="name" name="name" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta del Animal</label>
+            <select id="chapeta" name="chapeta" required
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
+              <option value="">Selecciona una chapeta</option>
+              {/* Estas opciones van a venir de tu backend, del listado de animales */}
+              <option value="5">5</option>
+              <option value="3">3</option>
+            </select>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta Animal</label>
-            <input type="number" id="chapeta" name="chapeta" required
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Responsable</label>
+            <input type="text" id="responsable" name="responsable" required
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
           </div>
 
           <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-gray-700 mb-2">Resultado de la Prueba</label>
-            <input type="text" id="resultado" name="resultado" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <select id="resultado" name="resultado" required
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
+              <option value="">Selecciona un resultado</option>
+              <option value="1">1 - Rojo (sin anemia)</option>
+              <option value="2">2 - Rojo rosado (sin anemia)</option>
+              <option value="3">3 - Rosado (anemia leve)</option>
+              <option value="4">4 - Rosado pálido (anemia moderada)</option>
+              <option value="5">5 - Blanco (anemia severa)</option>
+            </select>
           </div>
 
           <div className="md:col-span-2 flex justify-end mt-4">

@@ -11,15 +11,13 @@ function FormCreationMastitis() {
         <form className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta</label>
-            <input type="text" id="chapeta" name="chapeta" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Nombre Animal</label>
-            <input type="text" id="name" name="name" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta del Animal</label>
+            <select id="chapeta" name="chapeta" required
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
+              <option value="">Selecciona una chapeta</option>
+              <option value="5">5</option>
+              <option value="3">3</option>
+            </select>
           </div>
 
           <div>
