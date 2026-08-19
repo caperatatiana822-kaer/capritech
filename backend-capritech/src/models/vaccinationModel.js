@@ -1,5 +1,5 @@
 const db = require('../config/conectionDB');
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 const Vaccination = db.define('Vaccination', {
     id: {
@@ -11,16 +11,8 @@ const Vaccination = db.define('Vaccination', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     fecha: {
         type: DataTypes.DATE,
-        allowNull: false
-    },
-    hora: {
-        type: DataTypes.STRING,
         allowNull: false
     },
     vacuna: {
@@ -31,4 +23,9 @@ const Vaccination = db.define('Vaccination', {
         type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    tableName: 'vaccination',
+    timestamps: true
 });
+
+module.exports = Vaccination;

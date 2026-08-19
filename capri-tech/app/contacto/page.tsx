@@ -22,30 +22,29 @@ export default function Contact() {
             </h3>
 
             <p><strong>Correo:</strong> capritech@gmail.com</p>
-            <p><strong>Teléfono:</strong> +57 300 000 0000</p>
             <p><strong>Ubicación:</strong> SENA Centro Agropecuario La Granja, Espinal - Tolima</p>
             <div className="mt-6">
               <h4 className="text-xl font-semibold mb-3">contactanos en nuestras redes</h4>
 
               <div className="flex flex-col gap-3">
 
-                <a href="#" className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition">
+                <a href="#" className="flex items-center gap-3 text-gray-700 hover:text-green-700">
                   <FaFacebook size={20} />
                   <span>CapriTech Oficial</span>
                 </a>
 
-                <a href="#" className="flex items-center gap-3 text-gray-700 hover:text-pink-500 transition">
+                <a href="#" className="flex items-center gap-3 text-gray-700 hover:text-green-700">
                   <FaInstagram size={20} />
                   <span>@capritech</span>
                 </a>
 
                 <a 
-                  href="https://wa.me/573000000000" 
+                  href="https://wa.me/573208730189" 
                   target="_blank"
-                  className="flex items-center gap-3 text-gray-700 hover:text-green-500 transition"
+                  className="flex items-center gap-3 text-gray-700 hover:text-green-700"
 >
                   <FaWhatsapp size={20} />
-                  <span>+57 300 000 0000</span>
+                  <span>+57 320 873 0189</span>
                 </a>
 
               </div>

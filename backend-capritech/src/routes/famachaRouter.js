@@ -5,6 +5,7 @@ const {getAllFamacha,
     createFamacha, 
     updateFamacha, 
     deleteFamacha} = require("../controllers/famachaController.js");
+// const { validateToken } = require('../middlewares/handlerToken.js');
 
 //ruta para famacha
 /**
@@ -26,7 +27,7 @@ const {getAllFamacha,
  *       200:
  *         description: Lista de registros de famacha obtenida correctamente
  */
-router.get("/famachaAll", getAllFamacha)
+router.get("/famachaAll",  getAllFamacha)
 
 //ruta para famacha con id
 /**
@@ -49,7 +50,7 @@ router.get("/famachaAll", getAllFamacha)
  *       404:
  *         description: Registro de famacha no encontrado
  */
-router.get("/famacha/:id", getFamachaById)
+router.get("/famacha/:id",  getFamachaById)
 
 //crear famacha
 /**
@@ -85,7 +86,7 @@ router.post("/famacha", createFamacha)
  *       404:
  *         description: Registro de famacha no encontrado
  */
-router.put("/famacha/:id", updateFamacha)
+router.put("/famacha/:id",  updateFamacha)
 //eliminar famacha
 /**
  * @swagger

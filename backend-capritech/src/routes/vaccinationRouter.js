@@ -4,7 +4,8 @@ const{getAllVaccination,
     getVaccinationById,
     createVaccination,
     updateVaccination,
-    deleteVaccination} = require("../controllers/vaccinationController.js");   
+    deleteVaccination} = require("../controllers/vaccinationController.js");  
+// const { validateToken } = require('../middlewares/handlerToken.js'); 
         
 /**
  * @swagger
@@ -25,7 +26,7 @@ const{getAllVaccination,
  *       200:
  *         description: Lista de registros de vacunación obtenida correctamente
  */
-router.get("/vaccinationAll", getAllVaccination)
+router.get("/vaccinationAll",  getAllVaccination)
 
 /**
  * @swagger
@@ -60,7 +61,7 @@ router.get("/vaccination/:id", getVaccinationById)
  *       201:
  *         description: Registro de vacunación creado correctamente
  */
-router.post("/vaccination", createVaccination)
+router.post("/vaccination",  createVaccination)
 
 /**
  * @swagger
@@ -104,6 +105,6 @@ router.put("/vaccination/:id", updateVaccination)
 *       404:
 *         description: Registro de vacunación no encontrado
  */
-router.delete("/vaccination/:id", deleteVaccination)
+router.delete("/vaccination/:id",  deleteVaccination)
 
 module.exports = router;

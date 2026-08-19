@@ -1,53 +1,211 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+
 function FormCreationMastitis() {
+  const router = useRouter()
+
+  const [animales, setAnimales] = useState<any[]>([])
+  const [chapeta, setChapeta] = useState("")
+  const [fecha, setFecha] = useState("")
+  const [resultado, setResultado] = useState("")
+  const [observaciones, setObservaciones] = useState("")
+  const [responsable, setResponsable] = useState("")
+  const [enviando, setEnviando] = useState(false)
+  const [error, setError] = useState("")
+  const [cargandoAnimales, setCargandoAnimales] = useState(true)
+
+  // Cargar animales desde la base de datos
+  useEffect(() => {
+    async function cargarAnimales() {
+      try {
+        setCargandoAnimales(true)
+        setError("")
+        const res = await fetch("http://localhost:3001/api/livestock/livestockAll")
+        const json = await res.json()
+        
+        if (!res.ok) {
+          throw new Error(json.message || "Error al cargar animales")
+        }
+        
+        setAnimales(json.data || [])
+      } catch (e: any) {
+        console.error(e)
+        setError(e.message || "No se pudieron cargar los animales")
+      } finally {
+        setCargandoAnimales(false)
+      }
+    }
+    cargarAnimales()
+  }, [])
+
+  const todosAnimales = animales
+
+  async function handleSubmit(evento: React.FormEvent) {
+    evento.preventDefault()
+    setEnviando(true)
+    setError("")
+
+    // Validar que se haya seleccionado una chapeta
+    if (!chapeta) {
+      setError("Debe seleccionar un animal valido.")
+      setEnviando(false)
+      return
+    }
+
+    // Convertir chapeta a número para comparar
+    const chapetaNumero = parseInt(chapeta)
+    
+    // Buscar el animal por chapeta (comparando números)
+    const animal = todosAnimales.find(a => Number(a.chapeta) === chapetaNumero)
+    
+    if (!animal) {
+      console.log("Animal no encontrado. Chapeta seleccionada:", chapeta)
+      console.log("Animales disponibles:", todosAnimales)
+      setError("Debe seleccionar un animal valido.")
+      setEnviando(false)
+      return
+    }
+
+    const nuevoCaso = {
+      chapeta: chapetaNumero,
+      fecha: fecha,
+      resultado: resultado,
+      observaciones: observaciones,
+      responsable: responsable,
+    }
+
+    try {
+      const respuesta = await fetch("http://localhost:3001/api/mastitis/mastitis", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nuevoCaso),
+      })
+
+      const datos = await respuesta.json()
+      console.log("Respuesta del backend:", datos)
+
+      if (!respuesta.ok) {
+        const mensajeError = datos.message || "Error al registrar el caso de mastitis"
+        const erroresDetalle = datos.errors ? datos.errors.map((e: any) => e.mensaje).join(", ") : ""
+        throw new Error(erroresDetalle || mensajeError)
+      }
+
+      alert("Caso de mastitis registrado correctamente")
+      router.push("/dashboard/mastitis/table")
+
+    } catch (error: any) {
+      console.error("Error al registrar el caso de mastitis:", error)
+      setError(error.message || "No se pudo registrar el caso de mastitis")
+    } finally {
+      setEnviando(false)
+    }
+  }
+
   return (
     <div className="flex justify-center py-10 px-6">
       <div className="w-full max-w-4xl bg-white shadow-lg rounded-2xl overflow-hidden">
 
         <div className="bg-green-700 text-white p-6">
           <h1 className="text-2xl font-bold">Formulario de Mastitis</h1>
-          <p className="text-green-100 mt-1">Ingresa la información del diagnóstico de mastitis</p>
+          <p className="text-green-100 mt-1">Ingresa la informacion del diagnostico de mastitis</p>
         </div>
 
-        <form className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {error && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mx-6 mt-4">
+            <p className="text-red-700 text-sm">{error}</p>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta del Animal</label>
-            <select id="chapeta" name="chapeta" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600">
-              <option value="">Selecciona una chapeta</option>
-              <option value="5">5</option>
-              <option value="3">3</option>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Chapeta del Animal *</label>
+            <select 
+              required 
+              value={chapeta} 
+              onChange={(e) => {
+                console.log("Chapeta seleccionada:", e.target.value)
+                setChapeta(e.target.value)
+              }}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"
+              disabled={cargandoAnimales}
+            >
+              <option value="">
+                {cargandoAnimales ? "Cargando animales..." : "Selecciona una chapeta"}
+              </option>
+              {todosAnimales.map((animal) => (
+                <option key={animal.id} value={String(animal.chapeta)}>
+                  {animal.chapeta} - {animal.nombre} ({animal.sexo})
+                </option>
+              ))}
+            </select>
+            {todosAnimales.length === 0 && !cargandoAnimales && (
+              <p className="text-sm text-yellow-600 mt-1">
+                No hay animales registrados. Registra un animal primero.
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Fecha *</label>
+            <input 
+              type="date" 
+              required 
+              value={fecha} 
+              onChange={(e) => setFecha(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Resultado *</label>
+            <select 
+              required 
+              value={resultado} 
+              onChange={(e) => setResultado(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"
+            >
+              <option value="">Selecciona un resultado</option>
+              <option value="Negativo">Negativo</option>
+              <option value="Positivo">Positivo</option>
+              <option value="Sospechoso">Sospechoso</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Fecha</label>
-            <input type="date" id="fecha" name="fecha" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Responsable *</label>
+            <input 
+              type="text" 
+              required 
+              value={responsable} 
+              onChange={(e) => setResponsable(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"
+              placeholder="Nombre del responsable"
+            />
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Resultado</label>
-            <input type="text" id="resultado" name="resultado" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
-          </div>
-
-          <div>
+          <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-gray-700 mb-2">Observaciones</label>
-            <input type="text" id="observaciones" name="observaciones" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Responsable</label>
-            <input type="text" id="responsable" name="responsable" required
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"/>
+            <textarea
+              value={observaciones}
+              onChange={(e) => setObservaciones(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-600"
+              rows={3}
+              placeholder="Observaciones adicionales (opcional)"
+            />
           </div>
 
           <div className="md:col-span-2 flex justify-end mt-4">
-            <button type="submit"
-              className="bg-green-700 hover:bg-green-800 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition">
-              Guardar Registro
+            <button 
+              type="submit" 
+              disabled={enviando || cargandoAnimales}
+              className="bg-green-700 hover:bg-green-800 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition disabled:opacity-50"
+            >
+              {enviando ? "Guardando..." : "Guardar Registro"}
             </button>
           </div>
 

@@ -5,7 +5,7 @@ const {getAllMounts,
     createMount, 
     updateMount, 
     deleteMount} = require("../controllers/mountsController.js");
-
+const { validateToken } = require('../middlewares/handlerToken.js');
 
 /**
  * @swagger
@@ -28,7 +28,7 @@ const {getAllMounts,
  */
 
 /** */
-router.get("/mountsAll", getAllMounts)   
+router.get("/mountsAll", validateToken, getAllMounts)   
 
 /**
  * @swagger
@@ -50,7 +50,7 @@ router.get("/mountsAll", getAllMounts)
  *       404:
  *         description: Monta no encontrada
  */
-router.get("/mounts/:id", getMountById)
+router.get("/mounts/:id", validateToken, getMountById)
 
 /**
  * @swagger
@@ -69,7 +69,7 @@ router.get("/mounts/:id", getMountById)
  *       201:
  *         description: Monta creada correctamente
  */
-router.post("/mounts", createMount)
+router.post("/mounts", validateToken, createMount)
 
 /**
  * @swagger
@@ -97,7 +97,7 @@ router.post("/mounts", createMount)
  *       404:
  *         description: Monta no encontrada
  */
-router.put("/mounts/:id", updateMount)
+router.put("/mounts/:id", validateToken, updateMount)
 /**
  * @swagger
  * /api/mounts/mounts/{id}:
@@ -118,6 +118,6 @@ router.put("/mounts/:id", updateMount)
  *       404:
  *         description: Monta no encontrada
  */
-router.delete("/mounts/:id", deleteMount)
+router.delete("/mounts/:id", validateToken, deleteMount)
 
 module.exports = router;

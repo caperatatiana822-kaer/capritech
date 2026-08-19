@@ -1,5 +1,5 @@
 const db = require('../config/conectionDB');
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 const Feeding = db.define('Feeding', {
     id: {
@@ -9,10 +9,6 @@ const Feeding = db.define('Feeding', {
     },
     fecha: {
         type: DataTypes.DATE,
-        allowNull: false
-    },
-    hora: {
-        type: DataTypes.STRING,
         allowNull: false
     },
     responsable: {
@@ -27,4 +23,9 @@ const Feeding = db.define('Feeding', {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false
     }
+}, {
+    tableName: 'feeding',
+    timestamps: true
 });
+
+module.exports = Feeding;

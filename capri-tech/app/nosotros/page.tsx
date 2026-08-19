@@ -75,25 +75,25 @@ export default function Nosotros() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
                 <div className="text-center">
-                <img src=""
+                <img src="https://ui-avatars.com/api/?name=Myriam+Gonzales&background=15803d&color=fff"
                 className="w-32 h-32 object-cover rounded-full mx-auto shadow-md hover:scale-105 transition"/>
                 <p className="mt-3 font-semibold">Myriam Janeth Gonzales Reyes</p>
                 <p className="text-sm text-gray-500">Ing. software, especialista en base de datos</p>
             </div>
             <div className="text-center">
-                <img src=""
+                <img src="https://ui-avatars.com/api/?name=Euclidez+Basto&background=15803d&color=fff"
                 className="w-32 h-32 object-cover rounded-full mx-auto shadow-md hover:scale-105 transition"/>
                 <p className="mt-3 font-semibold">Euclidez Norbey Basto Ortiz</p>
                 <p className="text-sm text-gray-500">Ing. de sistemas</p>
             </div>
             <div className="text-center">
-                <img src=""
+                <img src="https://ui-avatars.com/api/?name=Sandra+Forero&background=15803d&color=fff"
                 className="w-32 h-32 object-cover rounded-full mx-auto shadow-md hover:scale-105 transition"/>
                 <p className="mt-3 font-semibold">Sandra Consuelo Forero</p>
                 <p className="text-sm text-gray-500">Medico Veterinario y Zootecnista. instructora a cargo de la unidad</p>
             </div>
             <div className="text-center">
-                <img src=""
+                <img src="https://ui-avatars.com/api/?name=Jorge+Andrade&background=15803d&color=fff"
                 className="w-32 h-32 object-cover rounded-full mx-auto shadow-md hover:scale-105 transition"/>
                 <p className="mt-3 font-semibold">Jorge Eliecer Andrade</p>
                 <p className="text-sm text-gray-500">ing. informático</p>

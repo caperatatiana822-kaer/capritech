@@ -6,8 +6,7 @@ const {getAllFeeding,
     createFeeding,
     updateFeeding,
     deleteFeeding} = require("../controllers/feedingController.js");  
-
-//alimentacion
+// const { validateToken } = require('../middlewares/handlerToken.js');
 /**
  * @swagger
  * tags:
@@ -27,7 +26,7 @@ const {getAllFeeding,
  *       200:
  *         description: Lista de registros de alimentación obtenida correctamente
  */
-router.get("/feedingsAll", getAllFeeding)
+router.get("/feedingsAll",  getAllFeeding)
 //alimentacion con id
 /**
  * @swagger
@@ -49,7 +48,7 @@ router.get("/feedingsAll", getAllFeeding)
  *       404:
  *         description: Registro de alimentación no encontrado
  */
-router.get("/feedings/:id", getFeedingById)
+router.get("/feedings/:id",  getFeedingById)
 //crear alimentacion
 /**
  * @swagger
@@ -62,7 +61,7 @@ router.get("/feedings/:id", getFeedingById)
  *       201:
  *         description: Registro de alimentación creado correctamente
  */
-router.post("/feedings", createFeeding)
+router.post("/feedings",   createFeeding)
 //consultar alimentacion con id 
 /**
  * @swagger
@@ -106,6 +105,6 @@ router.put("/feedings/:id", updateFeeding)
  *       404:
  *         description: Registro de alimentación no encontrado
  */
-router.delete("/feedings/:id", deleteFeeding)
+router.delete("/feedings/:id",  deleteFeeding)
 
 module.exports = router;

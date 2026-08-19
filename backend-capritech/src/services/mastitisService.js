@@ -1,44 +1,60 @@
-const mastitis = require( '../models/mastitsModel' );
-const mastitisCreate = async ( data ) => {
+const Mastitis = require('../models/mastitisModel');
+
+const mastitisCreate = async (data) => {
     try {
-        const newMastitis = await mastitis.create( data );
+        console.log("Datos recibidos en servicio MASTITIS:", data);
+        const newMastitis = await Mastitis.create(data);
+        console.log("Mastitis creada:", newMastitis.toJSON());
         return newMastitis;
-    } catch ( error ) {
-        console.log( error );
+    } catch (error) {
+        console.log("Error en mastitisCreate:", error);
+        throw error;
     }
 };
+
 const getAllMastitis = async () => {
     try {
-        const mastitisRecords = await mastitis.findAll();
-        return mastitisRecords;
-    } catch ( error ) {
-        console.log( error );
+        const mastitisRecords = await Mastitis.findAll({
+            order: [['id', 'DESC']]
+        });
+        console.log("Registros MASTITIS encontrados:", mastitisRecords.length);
+        return mastitisRecords || [];
+    } catch (error) {
+        console.log("Error en getAllMastitis:", error);
+        throw new Error(`Error al obtener registros MASTITIS: ${error.message}`);
     }
 };
-const getIdMastitis = async ( id ) => {
+
+const getIdMastitis = async (id) => {
     try {
-        const mastitisRecord = await mastitis.findByPk( id );
-        return mastitisRecord;
-    } catch ( error ) {
-        console.log( error );
+        const mastitisRecord = await Mastitis.findByPk(id);
+        return mastitisRecord || null;
+    } catch (error) {
+        console.log("Error en getIdMastitis:", error);
+        throw new Error(`Error al obtener registro MASTITIS por ID: ${error.message}`);
     }
 };
-const deleteIdMastitis = async ( id ) => {
+
+const deleteIdMastitis = async (id) => {
     try {
-        const deletedMastitis = await mastitis.destroy( { where: { id: id } } );
+        const deletedMastitis = await Mastitis.destroy({ where: { id: id } });
         return deletedMastitis;
-    } catch ( error ) {
-        console.log( error );
+    } catch (error) {
+        console.log("Error en deleteIdMastitis:", error);
+        throw new Error(`Error al eliminar registro MASTITIS: ${error.message}`);
     }
 };
-const updateMastitis = async ( id, data ) => {
+
+const updateMastitis = async (id, data) => {
     try {
-        const updatedMastitis = await mastitis.update( data, { where: { id: id } } );
+        const updatedMastitis = await Mastitis.update(data, { where: { id: id } });
         return updatedMastitis;
-    } catch ( error ) {
-        console.log( error );
+    } catch (error) {
+        console.log("Error en updateMastitis:", error);
+        throw new Error(`Error al actualizar registro MASTITIS: ${error.message}`);
     }
 };
+
 module.exports = {
     mastitisCreate,
     getAllMastitis,

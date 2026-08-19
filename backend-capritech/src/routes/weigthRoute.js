@@ -8,6 +8,7 @@ const {
     updateWeigth,
     deleteWeigth
 } = require("../controllers/weigthController");
+// const { validateToken } = require('../middlewares/handlerToken');
 
 /**
  * @swagger
@@ -28,8 +29,8 @@ const {
  *       200:
  *         description: Lista de registros de peso obtenida correctamente
  */
+// router.get("/weigthAll", validateToken, getAllWeigth);
 router.get("/weigthAll", getAllWeigth);
-
 /**
  * @swagger
  * /api/weigth/weigth/{id}:
@@ -50,6 +51,7 @@ router.get("/weigthAll", getAllWeigth);
  *       404:
  *         description: Registro de peso no encontrado
  */
+// router.get("/weigth/:id", validateToken, getWeigthById);
 router.get("/weigth/:id", getWeigthById);
 
 /**
@@ -63,8 +65,8 @@ router.get("/weigth/:id", getWeigthById);
  *       201:
  *         description: Registro de peso creado correctamente
  */
+// router.post("/weigth", validateToken, createWeigth);
 router.post("/weigth", createWeigth);
-
 /**
  * @swagger
  * /api/weigth/weigth/{id}:
@@ -85,8 +87,8 @@ router.post("/weigth", createWeigth);
 *       404:
 *         description: Registro de peso no encontrado
  */
+// router.put("/weigth/:id", validateToken, updateWeigth);
 router.put("/weigth/:id", updateWeigth);
-
 /**
 * @swagger
 * /api/weigth/weigth/{id}:
@@ -107,6 +109,7 @@ router.put("/weigth/:id", updateWeigth);
 *       404:
 *         description: Registro de peso no encontrado
  */
+// router.delete("/weigth/:id", validateToken, deleteWeigth);
 router.delete("/weigth/:id", deleteWeigth);
 
 module.exports = router;

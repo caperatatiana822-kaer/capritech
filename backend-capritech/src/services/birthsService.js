@@ -1,47 +1,56 @@
-const births = require('../models/birthsModel');
+// services/birthsService.js
+const Birth = require('../models/birthsModel');
 
 const birthsCreate = async (data) => {
     try {
-        const newBirth = await births.create(data);
+        console.log("Datos recibidos en servicio:", data);
+        const newBirth = await Birth.create(data);
+        console.log("Nacimiento creado:", newBirth.toJSON());
         return newBirth;
     } catch (error) {
-        console.log(error);
+        console.log("Error en birthsCreate:", error);
+        throw error;
     }
 };
 
 const getAllbirths = async () => {
     try {
-        const allBirths = await births.findAll();
-        return allBirths;
+        const allBirths = await Birth.findAll();
+        console.log("Nacimientos encontrados:", allBirths.length);
+        return allBirths || [];
     } catch (error) {
-        console.log(error);
+        console.log("Error en getAllbirths:", error);
+        throw new Error(`Error al obtener nacimientos: ${error.message}`);
     }
 };
 
 const getIdbirths = async (id) => {
     try {
-        const birthid = await births.findOne({where: {id}});
-        return birthid;
+        const birthid = await Birth.findOne({ where: { id } });
+        return birthid || null;
     } catch (error) {
-        console.log(error);
+        console.log("Error en getIdbirths:", error);
+        throw new Error(`Error al obtener nacimiento por ID: ${error.message}`);
     }
 };
 
 const deleteIdbirths = async (id) => {
     try {
-        const deleteBirth = await births.destroy({where: {id}});
+        const deleteBirth = await Birth.destroy({ where: { id } });
         return deleteBirth;
     } catch (error) {
-        console.log(error);
+        console.log("Error en deleteIdbirths:", error);
+        throw new Error(`Error al eliminar nacimiento: ${error.message}`);
     }
 };
 
 const updatebirths = async (id, data) => {
     try {
-        const updateBirth = await births.update(data, {where: {id}}); 
+        const updateBirth = await Birth.update(data, { where: { id } });
         return updateBirth;
     } catch (error) {
-        console.log(error);
+        console.log("Error en updatebirths:", error);
+        throw new Error(`Error al actualizar nacimiento: ${error.message}`);
     }
 };
 

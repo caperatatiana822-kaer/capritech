@@ -16,26 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `users`
+-- Table structure for table `roll`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `roll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `id` tinyint NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `documentId` varchar(30) NOT NULL,
-  `postJobs` varchar(50) NOT NULL,
-  `verifyEmail` tinyint DEFAULT '0',
-  `active` tinyint DEFAULT '0',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `roll` (
+  `id_Roll` int NOT NULL AUTO_INCREMENT,
+  `id_app_Route` int NOT NULL,
+  `is_pasante` tinyint(1) NOT NULL DEFAULT '1',
+  `is_superadmin` tinyint(1) NOT NULL DEFAULT '1',
+  `is_gestor` tinyint(1) NOT NULL DEFAULT '1',
+  `is_admin` tinyint(1) NOT NULL DEFAULT '1',
+  `is_instructor` tinyint(1) NOT NULL DEFAULT '1',
+  `is_aprendiz` tinyint(1) NOT NULL DEFAULT '1',
+  `name` varchar(60) NOT NULL,
+  `abreviacion` varchar(45) NOT NULL,
+  `fec_creacion` date NOT NULL,
+  `fec_actual` date NOT NULL,
+  `id_roll_Route` int NOT NULL,
+  PRIMARY KEY (`id_Roll`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roll`
+--
+
+LOCK TABLES `roll` WRITE;
+/*!40000 ALTER TABLE `roll` DISABLE KEYS */;
+/*!40000 ALTER TABLE `roll` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -46,4 +58,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-08-08 16:36:39
+-- Dump completed on 2026-08-18 20:21:24

@@ -4,7 +4,8 @@ const {getAllResponsibles,
     getResponsibleById,
     createResponsible,
     updateResponsible,
-    deleteResponsible} = require("../controllers/responsibleController.js");    
+    deleteResponsible} = require("../controllers/responsibleController.js"); 
+// const { validateToken } = require('../middlewares/handlerToken.js');   
 
 /**
  * @swagger
@@ -25,7 +26,7 @@ const {getAllResponsibles,
  *       200:
  *         description: Lista de responsables obtenida correctamente
  */
-router.get("/responsibleAll", getAllResponsibles)
+router.get("/responsibleAll",  getAllResponsibles)
 /**
  * @swagger
  * /api/responsible/responsible/{id}:
@@ -79,7 +80,7 @@ router.post("/responsible", createResponsible)
  *       404:
  *         description: Registro de responsable no encontrado
  */
-router.put("/responsible/:id", updateResponsible)
+router.put("/responsible/:id",  updateResponsible)
 /**
  * @swagger
  * /api/responsible/responsible/{id}:
@@ -100,6 +101,6 @@ router.put("/responsible/:id", updateResponsible)
  *       404:
  *         description: Registro de responsable no encontrado
  */
-router.delete("/responsible/:id", deleteResponsible)
+router.delete("/responsible/:id",  deleteResponsible)
 
 module.exports = router;

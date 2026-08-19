@@ -5,7 +5,7 @@ const {getAllBirths,
     createBirths,
     updateBirths,
     deleteBirths} = require("../controllers/birthsController.js");
-//ruta para naciminetos
+// const { validateToken } = require('../middlewares/handlerToken.js');
 
 /**
  * @swagger
@@ -26,7 +26,7 @@ const {getAllBirths,
  *       200:
  *         description: Lista de nacimientos obtenida correctamente
  */
-router.get("/birthsAll", getAllBirths)
+router.get("/birthsAll",  getAllBirths)
 
 //ruta para nacimientos con id 
 
@@ -50,7 +50,7 @@ router.get("/birthsAll", getAllBirths)
  *       404:
  *         description: Nacimiento no encontrado
  */
-router.get("/births/:id", getBirthsById)
+router.get("/births/:id",  getBirthsById)
 
 //crear nacimiento
 /**
@@ -64,7 +64,7 @@ router.get("/births/:id", getBirthsById)
  *       201:
  *         description: Nacimiento creado correctamente
  */
-router.post("/births", createBirths)
+router.post("/births",  createBirths)
 
 //actualizar nacimiento
 /**
@@ -87,7 +87,7 @@ router.post("/births", createBirths)
  *       404:
  *         description: Nacimiento no encontrado
  */
-router.put("/births/:id", updateBirths)
+router.put("/births/:id",  updateBirths)
 
 //eliminar nacimiento
 /**
@@ -110,7 +110,7 @@ router.put("/births/:id", updateBirths)
  *       404:
  *         description: Nacimiento no encontrado
  */
-router.delete("/births/:id", deleteBirths)
+router.delete("/births/:id",  deleteBirths)
 
 module.exports = router;
 

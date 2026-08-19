@@ -1,6 +1,6 @@
 "use client"
 import { usePathname } from "next/navigation"
-import { ChevronDown, PawPrint, Milk, Scale, Eye, Heart, Baby, Wheat, Cross, Stethoscope, Syringe, HeartPulse, Users, LogOut } from "lucide-react"
+import { ChevronDown, PawPrint, Milk, Scale, Eye, Heart, Baby, Wheat, Cross, Stethoscope, Syringe, HeartPulse, Users, UserCog, LogOut } from "lucide-react"
 import { useState } from "react"
 import {
   Sidebar,
@@ -351,6 +351,31 @@ export function AppSidebar() {
                     <SidebarMenuSubButton asChild className="
               hover:text-green-700 rounded-lg trhover:bg-green-100 ansition-all duration-200 px-3 py-2">
                       <a href="/dashboard/responsible/table">Listar responsables</a>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+
+            <Collapsible>
+              <SidebarMenuItem className="mb-2">
+                <CollapsibleTrigger asChild>
+                  <button className="font-semibold text-green-800 flex items-center justify-between w-full">
+                    <span className="flex items-center gap-2">
+                      <UserCog className="h-4 w-4" />
+                      Usuarios</span>
+                    <ChevronDown className="h-4 w-4" />
+                  </button>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarMenuSubButton asChild className="
+              hover:text-green-700 rounded-lg trhover:bg-green-100 ansition-all duration-200 px-3 py-2" >
+                      <a href="/dashboard/user">Crear Usuario</a>
+                    </SidebarMenuSubButton>
+                    <SidebarMenuSubButton asChild className="
+              hover:text-green-700 rounded-lg trhover:bg-green-100 ansition-all duration-200 px-3 py-2">
+                      <a href="/dashboard/user/table">Listar Usuarios</a>
                     </SidebarMenuSubButton>
                   </SidebarMenuSub>
                 </CollapsibleContent>

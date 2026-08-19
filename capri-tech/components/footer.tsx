@@ -2,15 +2,17 @@ export default function Footer(){
     const linkSections = [
         {
             title: "Navegación",
-            links: ["Inicio", "Nosotros", "Contacto", "Proyectos", "Servicios"]
+            links: ["Inicio", "Nosotros", "Contacto", "ingresar"]
         },
         {
-            title: "Ayuda",
-            links: ["Soporte", "Términos y condiciones", "Política de privacidad", "Preguntas frecuentes"]
+            title: "Módulos",
+            links: ["Inventario", "Alimentación", "Pesaje", "Producción lechera", "montas", "Gestión de usuarios", "nacimientos", "responsables", "sanidad", "mortalidad" ]
         },
         {
-            title: "Síguenos",
-            links: ["Instagram", "Facebook", "YouTube"]
+            title: "Información",
+            links: ["Centro Agropecuario La Granja",
+            "SENA Regional Tolima",
+            "Unidad caprina"]
         }
     ];
 
@@ -27,9 +29,8 @@ export default function Footer(){
                         alt="logo"
                     />
 
-                    <p className="max-w-[410px] mt-6">
-                        CapriTech es un proyecto enfocado en el desarrollo de soluciones tecnológicas, 
-                        brindando herramientas innovadoras y funcionales para mejorar la experiencia digital.
+                        <p className="max-w-[410px] mt-6">
+    CapriTech es un sistema de información desarrollado para apoyar la gestión de la unidad caprina del Centro Agropecuario La Granja - SENA. Su propósito es facilitar el registro, consulta y administración de la información de los animales y de los procesos realizados en la unidad.
                     </p>
                 </div>
 
@@ -50,7 +51,7 @@ export default function Footer(){
             </div>
 
             <p className="py-4 text-center text-sm md:text-base text-gray-500/80">
-                © 2026 CapriTech - Todos los derechos reservados.
+               © 2026 CapriTech | Centro Agropecuario La Granja SENA.
             </p>
         </div>
         </>
