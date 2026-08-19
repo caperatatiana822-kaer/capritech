@@ -10,7 +10,8 @@ const Response = require("../functions/response");
 const getAllBirths = async (req, res) => {
     try {
         const birthsList = await getAllBirthsService();
-        var response = new Response(true, "Nacimientos consultados exitosamente", birthsList, null);
+        const dataArray = Array.isArray(birthsList) ? birthsList : [];
+        var response = new Response(true, "Nacimientos consultados exitosamente", dataArray, null);
         res.status(200);
         res.json(response.json);
     } catch (error) {
@@ -31,7 +32,7 @@ const getBirthsById = async (req, res) => {
         errores.push({ mensaje: "El ID es obligatorio" });
     }
     if (id == "") {
-        errores.push({ mensaje: "El ID no puede estar vacío" });
+        errores.push({ mensaje: "El ID no puede estar vacio" });
     }
     if (errores.length > 0) {
         var response = new Response(false, "Error al consultar el nacimiento", null, errores);
@@ -63,11 +64,7 @@ const createBirths = async (req, res) => {
         sexo,
         pesoNacer,
         fichaMadre,
-        nombreMadre,
-        razaMadre,
-        fichaPadre,
-        nombrePadre,
-        razaPadre
+        fichaPadre
     } = req.body;
 
     let errores = [];
@@ -79,27 +76,33 @@ const createBirths = async (req, res) => {
     if (!sexo) errores.push({ mensaje: "El sexo es obligatorio" });
     if (!pesoNacer) errores.push({ mensaje: "El peso al nacer es obligatorio" });
     if (!fichaMadre) errores.push({ mensaje: "La ficha de la madre es obligatoria" });
-    if (!nombreMadre) errores.push({ mensaje: "El nombre de la madre es obligatorio" });
-    if (!razaMadre) errores.push({ mensaje: "La raza de la madre es obligatoria" });
     if (!fichaPadre) errores.push({ mensaje: "La ficha del padre es obligatoria" });
-    if (!nombrePadre) errores.push({ mensaje: "El nombre del padre es obligatorio" });
-    if (!razaPadre) errores.push({ mensaje: "La raza del padre es obligatoria" });
 
     if (errores.length > 0) {
-        const response = new Response(false, "Error en la creación del nacimiento", null, errores);
+        const response = new Response(false, "Error en la creacion del nacimiento", null, errores);
         res.status(400);
         res.json(response.json);
         return;
     }
 
-    data = {chapeta, nombreAnimal, fechaNacimiento, raza, sexo, pesoNacer, fichaMadre, nombreMadre, razaMadre, fichaPadre, nombrePadre, razaPadre};
+    data = {
+        chapeta: parseInt(chapeta),
+        nombre: nombreAnimal,
+        fechaNacimiento: fechaNacimiento,
+        raza: raza,
+        sexo: sexo,
+        pesoNacimiento: parseFloat(pesoNacer),
+        chapetaMadre: parseInt(fichaMadre),
+        chapetaPadre: parseInt(fichaPadre)
+    };
+    
     const births = await birthsCreate(data);
     var response = new Response(true, "Nacimiento creado exitosamente", births, null);
     res.status(201);
     res.json(response.json);
 } catch (error) {
     console.log(error);
-    var response = new Response(false, "error en la creación de nacimiento", null, [
+    var response = new Response(false, "error en la creacion de nacimiento", null, [
         error.message,
     ])
     res.status(500);
@@ -116,7 +119,7 @@ const updateBirths = async (req, res) => {
         errores.push({ mensaje: "El ID es obligatorio" });
     }
     if (id == "") {
-        errores.push({ mensaje: "El ID no puede estar vacío" });
+        errores.push({ mensaje: "El ID no puede estar vacio" });
     }
     if (errores.length > 0) {
         var response = new Response(false, "Error al actualizar el nacimiento", null, errores);
@@ -130,7 +133,7 @@ const updateBirths = async (req, res) => {
     res.json(response.json);
 } catch (error) {
     console.log(error);
-    var response = new Response(false, "error en la actualización de nacimiento", null, [
+    var response = new Response(false, "error en la actualizacion de nacimiento", null, [
         error.message,
     ])
     res.status(500);
@@ -146,7 +149,7 @@ const deleteBirths = async (req, res) => {
         errores.push({ mensaje: "El ID es obligatorio" });
     }
     if (id == "") {
-        errores.push({ mensaje: "El ID no puede estar vacío" });
+        errores.push({ mensaje: "El ID no puede estar vacio" });
     }
     if (errores.length > 0) {
         var response = new Response(false, "Error al eliminar el nacimiento", null, errores);

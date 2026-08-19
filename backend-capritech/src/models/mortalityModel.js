@@ -1,31 +1,27 @@
 const db = require('../config/conectionDB');
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
+
 const Mortality = db.define('Mortality', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    name: {
-        type: DataTypes.STRING,
-        max: 30,
-        min: 3,
-        allowNull: false
-    },
-    date: {
+    fecha: {
         type: DataTypes.DATE,
         allowNull: false
     },
-    sex: {
-        type: DataTypes.STRING,
+    chapeta: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
-    production: {
-        type: DataTypes.STRING, 
-        allowNull: false
-    },
-    diagnosis: {
+    diagnosticopresuntivo: {
         type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    tableName: 'mortality',
+    timestamps: true
 });
+
+module.exports = Mortality;

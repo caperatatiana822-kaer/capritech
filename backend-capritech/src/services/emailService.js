@@ -10,27 +10,25 @@ const transporter = nodemailer.createTransport({
         user: process.env.SMTP_USER, 
         pass: process.env.SMTP_PASS,   
     }, 
-     tls: {     
+    tls: {     
         rejectUnauthorized: false,   
-        }, 
-        });
+    }, 
+    family: 4, 
+});
  
 const sendEmail = async (to, subject, text, html) => {
-     try {     
+    try {     
         await transporter.sendMail({
-             from: process.env.SMTP_USER,
-                    to,
-                     subject,
-                    text,       
-                    html,
-                     }); 
-                      } catch (error) {     
-                        await createLog(error);
-                         throw error;   
-                        }  
-                        }; 
+            from: process.env.SMTP_USER,
+            to,
+            subject,
+            text,       
+            html,
+        }); 
+    } catch (error) {     
+        await createLog(error);
+        throw error;   
+    }  
+}; 
 
-module.exports = { sendEmail, }; 
-
-    
-
+module.exports = { sendEmail, };

@@ -44,7 +44,7 @@ app.use("/api/mastitis", mastitisRouter);
 app.use("/api/mortality", mortalityRouter);
 app.use("/api/feeding", feedingRouter);
 app.use("/api/births", birthsRouter);
-app.use("/api/resposible", responsibleRouter);
+app.use("/api/responsible", responsibleRouter);
 app.use("/api/mounts", mountsRoute);
 app.use("/api/weigth", weigthRoute)
 

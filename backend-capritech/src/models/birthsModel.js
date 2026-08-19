@@ -1,11 +1,20 @@
+// models/birthsModel.js
 const db = require('../config/conectionDB');
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 const Birth = db.define('Birth', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
+    },
+    chapeta: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    nombre: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     fechaNacimiento: {
         type: DataTypes.DATE,
@@ -19,14 +28,6 @@ const Birth = db.define('Birth', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    chapeta: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     pesoNacimiento: {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false
@@ -35,28 +36,13 @@ const Birth = db.define('Birth', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    nombreMadre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    razaMadre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     chapetaPadre: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
-    nombrePadre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    razaPadre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    gananciaPeso: {
-        type: DataTypes.DECIMAL(10,2),
-        allowNull: true
     }
+}, {
+    tableName: 'births',
+    timestamps: true
 });
+
+module.exports = Birth;

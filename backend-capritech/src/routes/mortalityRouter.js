@@ -5,6 +5,7 @@ const {getAllMortality,
     createMortality,
     updateMortality,
     deleteMortality} = require("../controllers/mortalityController.js");
+    // const { validateToken } = require('../middlewares/handlerToken.js');
 
 /**
  * @swagger
@@ -58,7 +59,7 @@ router.get("/mortality/:id", getMortalityById)
  *       201:
  *         description: Registro de mortalidad creado correctamente
  */
-router.post("/mortality", createMortality)
+router.post("/mortality",  createMortality)
 /**
  * @swagger
  * /api/mortality/mortality/{id}:
@@ -100,6 +101,6 @@ router.put("/mortality/:id", updateMortality)
 *       404:
 *         description: Registro de mortalidad no encontrado
  */
-router.delete("/mortality/:id", deleteMortality)
+router.delete("/mortality/:id",  deleteMortality)
 
 module.exports = router;

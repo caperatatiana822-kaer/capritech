@@ -10,172 +10,159 @@ const Response = require("../functions/response");
 const getAllMortality = async (req, res) => {
     try {
         const mortalityList = await getAllMortalityService();
-        var response = new Response(true, "Mortalidades consultadas exitosamente", mortalityList, null);
+        const dataArray = Array.isArray(mortalityList) ? mortalityList : [];
+        var response = new Response(true, "Mortalidades consultadas exitosamente", dataArray, null);
         res.status(200);
         res.json(response.json);
     } catch (error) {
         console.log(error);
         var response = new Response(false, "error al consultar todas las mortalidades", null, [
             error.message,
-        ])
+        ]);
         res.status(500);
         res.json(response.json);
     }
-}
+};
 
 const getMortalityById = async (req, res) => {
     try {
-    const {id} = req.params;
-    var errores = [];
-    if (!id) {
-        errores.push({ mensaje: "El ID es obligatorio" });
-    }
-    if (id == "") {
-        errores.push({ mensaje: "El ID no puede estar vacío" });
-    }
-    if (errores.length > 0) {
-        var response = new Response(false, "Error al consultar la mortalidad", null, errores);
-        res.status(400);
+        const { id } = req.params;
+        var errores = [];
+        if (!id || String(id).trim() === "") {
+            errores.push({ mensaje: "El ID es obligatorio" });
+        }
+        if (errores.length > 0) {
+            var response = new Response(false, "Error al consultar la mortalidad", null, errores);
+            res.status(400);
+            res.json(response.json);
+            return;
+        }
+        const mortality = await getIdMortality(id);
+        if (!mortality) {
+            var response = new Response(false, "Mortalidad no encontrada", null, [
+                { mensaje: "No se encontro una mortalidad con el ID proporcionado" }
+            ]);
+            res.status(404);
+            res.json(response.json);
+            return;
+        }
+        var response = new Response(true, "Mortalidad consultada exitosamente", mortality, null);
+        res.status(200);
         res.json(response.json);
-        return;
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error en la consulta de la mortalidad", null, [
+            error.message,
+        ]);
+        res.status(500);
+        res.json(response.json);
     }
-    const mortality = await getIdMortality(id);
-    var response = new Response(true, "Mortalidad consultada exitosamente", mortality, null);
-    res.status(200);
-    res.json(response.json);
-} catch (error) {
-    console.log(error);
-    var response = new Response(false, "error en la consulta de la mortalidad", null, [
-        error.message,
-    ])
-    res.status(500);
-    res.json(response.json);
-    }
-}
+};
 
-const createMortality = async(req, res) => {
+const createMortality = async (req, res) => {
     try {
-    const {fecha, chapeta, nombre, sexo, estadodeproduccion, diagnosticopresuntivo, generarreportedemortalidad} = req.body;
-    var errores = [];
-    if(
-        !fecha ||
-        !chapeta ||
-        !nombre ||
-        !sexo ||
-        !estadodeproduccion ||
-        !diagnosticopresuntivo ||
-        !generarreportedemortalidad
-    ){
-        errores.push({mensaje: "Todos los campos son obligatorios"});
-    }
+        const { fecha, chapeta, diagnosticopresuntivo } = req.body;
 
-    if(fecha == ""){
-        errores.push({mensaje: "El campo fecha no puede estar vacio"});
-    }
+        var errores = [];
 
-    if(chapeta == ""){
-        errores.push({mensaje: "El campo chapeta no puede estar vacio"});
-    }
+        if (!fecha || String(fecha).trim() === "") {
+            errores.push({ mensaje: "La fecha es obligatoria" });
+        }
+        if (!chapeta || String(chapeta).trim() === "") {
+            errores.push({ mensaje: "La chapeta es obligatoria" });
+        }
+        if (!diagnosticopresuntivo || String(diagnosticopresuntivo).trim() === "") {
+            errores.push({ mensaje: "El diagnostico presuntivo es obligatorio" });
+        }
 
-    if(nombre == ""){
-        errores.push({mensaje: "El campo nombre no puede estar vacio"});
-    }
+        if (errores.length > 0) {
+            var response = new Response(false, "Error en la creacion de la mortalidad", null, errores);
+            res.status(400);
+            res.json(response.json);
+            return;
+        }
 
-    if(sexo == ""){
-        errores.push({mensaje: "El campo sexo no puede estar vacio"});
-    }
+        const data = {
+            fecha: fecha,
+            chapeta: parseInt(chapeta),
+            diagnosticopresuntivo: diagnosticopresuntivo
+        };
 
-    if(estadodeproduccion == ""){
-        errores.push({mensaje: "El campo estadodeproduccion no puede estar vacio"});
-    }
-
-    if(diagnosticopresuntivo == ""){
-        errores.push({mensaje: "El campo diagnosticopresuntivo no puede estar vacio"});
-    }
-
-    if(generarreportedemortalidad == ""){
-        errores.push({mensaje: "El campo generarreportedemortalidad no puede estar vacio"});
-    }
-
-    if(errores.length > 0){
-        var response = new Response(false, "Error en la creación de la mortalidad", null, errores);
-        res.status(400);
+        console.log("Datos a guardar MORTALITY:", data);
+        const mortality = await mortalityCreate(data);
+        var response = new Response(true, "Mortalidad creada exitosamente", mortality, null);
+        res.status(201);
         res.json(response.json);
-        return;
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error en la creacion de mortalidad", null, [
+            error.message,
+        ]);
+        res.status(500);
+        res.json(response.json);
     }
-    data = { fecha, chapeta, nombre, sexo, estadodeproduccion, diagnosticopresuntivo, generarreportedemortalidad };
-    const mortality = await mortalityCreate(data);
-    var response = new Response(true, "Mortalidad creada exitosamente", mortality, null );
-    res.status(201);
-    res.json(response.json);
-} catch (error) {
-    console.log(error);
-    var response = new Response(false, "error en la creación de mortalidad", null, [
-        error.message,
-    ])
-    res.status(500);
-    res.json(response.json);
-    }
-}
+};
 
 const updateMortality = async (req, res) => {
     try {
-    const {id} = req.params;
-    const data = req.body;
-    var errores = [];
-    if (!id) {
-        errores.push({ mensaje: "El ID es obligatorio" });
-    }
-    if (id == "") {
-        errores.push({ mensaje: "El ID no puede estar vacío" });
-    }
-    if (errores.length > 0) {
-        var response = new Response(false, "Error al actualizar la mortalidad", null, errores);
-        res.status(400);
+        const { id } = req.params;
+        const data = req.body;
+        var errores = [];
+        if (!id || String(id).trim() === "") {
+            errores.push({ mensaje: "El ID es obligatorio" });
+        }
+        if (errores.length > 0) {
+            var response = new Response(false, "Error al actualizar la mortalidad", null, errores);
+            res.status(400);
+            res.json(response.json);
+            return;
+        }
+        const mortality = await updateMortalityService(id, data);
+        var response = new Response(true, "Mortalidad actualizada exitosamente", mortality, null);
+        res.status(200);
         res.json(response.json);
-        return;
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error en la actualizacion de mortalidad", null, [
+            error.message,
+        ]);
+        res.status(500);
+        res.json(response.json);
     }
-    const mortality = await updateMortalityService(id, data);
-    var response = new Response(true, "Mortalidad actualizada exitosamente", mortality, null);
-    res.status(200);
-    res.json(response.json);
-} catch (error) {
-    console.log(error);
-    var response = new Response(false, "error en la actualización de mortalidad", null, [
-        error.message,
-    ])
-    res.status(500);
-    res.json(response.json);
-    }
-}
+};
 
 const deleteMortality = async (req, res) => {
     try {
-    const {id} = req.params;
-    var errores = [];
-    if (!id) {
-        errores.push({ mensaje: "El ID es obligatorio" });
-    }
-    if (id == "") {
-        errores.push({ mensaje: "El ID no puede estar vacío" });
-    }
-    if (errores.length > 0) {
-        var response = new Response(false, "Error al eliminar la mortalidad", null, errores);
-        res.status(400);
+        const { id } = req.params;
+        var errores = [];
+        if (!id || String(id).trim() === "") {
+            errores.push({ mensaje: "El ID es obligatorio" });
+        }
+        if (errores.length > 0) {
+            var response = new Response(false, "Error al eliminar la mortalidad", null, errores);
+            res.status(400);
+            res.json(response.json);
+            return;
+        }
+        const mortality = await deleteIdMortality(id);
+        if (mortality === 0) {
+            var response = new Response(false, "Mortalidad no encontrada", null, [
+                { mensaje: "No se encontro una mortalidad con el ID proporcionado" }
+            ]);
+            res.status(404);
+            res.json(response.json);
+            return;
+        }
+        var response = new Response(true, "Mortalidad eliminada exitosamente", { id }, null);
+        res.status(200);
         res.json(response.json);
-        return;
+    } catch (error) {
+        console.log(error);
+        var response = new Response(false, "error al eliminar mortalidad", null, [error.message]);
+        res.status(500);
+        res.json(response.json);
     }
-    const mortality = await deleteIdMortality(id);
-    var response = new Response(true, "Mortalidad eliminada exitosamente", mortality, null);
-    res.status(200);
-    res.json(response.json);
-} catch (error) {
-    console.log(error);
-    var response = new Response(false, "error al eliminar mortalidad", null, [error.message]);
-    res.status(500);
-    res.json(response.json);
-    }
-}
+};
 
 module.exports = {
     getAllMortality,

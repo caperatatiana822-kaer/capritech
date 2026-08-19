@@ -4,7 +4,8 @@ const {getAllMastitis,
     getMastitisById,
     createMastitis,
     updateMastitis,
-    deleteMastitis} = require("../controllers/mastitisController.js");  
+    deleteMastitis} = require("../controllers/mastitisController.js");
+// const { validateToken } = require('../middlewares/handlerToken.js');  
 
 /**
  * @swagger
@@ -25,7 +26,7 @@ const {getAllMastitis,
  *       200:
  *         description: Lista de registros de mastitis obtenida correctamente
  */
-router.get("/mastitisAll", getAllMastitis)
+router.get("/mastitisAll",  getAllMastitis)
 /**
  * @swagger
  * /api/mastitis/mastitis/{id}:
@@ -46,7 +47,7 @@ router.get("/mastitisAll", getAllMastitis)
  *       404:
  *         description: Registro de mastitis no encontrado
  */
-router.get("/mastitis/:id", getMastitisById)
+router.get("/mastitis/:id",  getMastitisById)
 /**
  * @swagger
  * /api/mastitis/mastitis:
@@ -79,7 +80,7 @@ router.post("/mastitis", createMastitis)
  *       404:
  *         description: Registro de mastitis no encontrado
  */
-router.put("/mastitis/:id", updateMastitis)
+router.put("/mastitis/:id",  updateMastitis)
 /**
  * @swagger
  * /api/mastitis/mastitis/{id}:
@@ -100,6 +101,6 @@ router.put("/mastitis/:id", updateMastitis)
  *       404:
  *         description: Registro de mastitis no encontrado
  */
-router.delete("/mastitis/:id", deleteMastitis)
+router.delete("/mastitis/:id",  deleteMastitis)
 
 module.exports = router;

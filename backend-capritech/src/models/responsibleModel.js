@@ -1,5 +1,5 @@
 const db = require('../config/conectionDB');
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 const Responsible = db.define('Responsible', {
     id: {
@@ -31,4 +31,9 @@ const Responsible = db.define('Responsible', {
         type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    tableName: 'responsibles',
+    timestamps: true
 });
+
+module.exports = Responsible;

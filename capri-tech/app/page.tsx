@@ -37,9 +37,9 @@ export default function Home() {
     </p>
 
     <title/>
-
-    <a href="/acercaUnidad">
-  <button className="bg-green-700 text-white px-6 py-2 rounded-full">
+    
+    <a href="/unidad">
+  <button className="bg-green-700 text-white px-6 py-2 rounded-full mt-4">
     Acerca de la unidad
   </button>
 </a>
